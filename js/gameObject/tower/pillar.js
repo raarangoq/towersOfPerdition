@@ -6,7 +6,32 @@ function addPillars(){
 	pillars[1] = addPillar(1);
 	pillars[2] = addPillar(2);
 
+	pillars.objective = 2;
+
 	pillars.setAlive = pillarsSetAlive;
+	pillars.restart = restartPillars;
+	
+}
+
+function pillarsSetAlive(value){
+	if(value){
+		pillars[0].revive();
+		pillars[1].revive();
+		pillars[2].revive();
+	}
+	else{
+		pillars[0].kill();
+		pillars[1].kill();
+		pillars[2].kill();
+	}
+}
+
+function restartPillars(){
+	for(i=0; i<3; i++){
+		this[i].slot[0] = null;
+		this[i].slot[1] = null;
+		this[i].slot[2] = null;
+	}
 }
 
 function addPillar(id){
@@ -22,20 +47,14 @@ function addPillar(id){
 	pillar.push = pushSegment;
 	pillar.pop = popSegment;
 	pillar.setSegmentPosition = setSegmentPosition;
+	pillar.checkObjective = checkObjective;
 
 	return pillar;
 }
 
-function pillarsSetAlive(value){
-	if(value){
-		pillars[0].revive();
-		pillars[1].revive();
-		pillars[2].revive();
-	}
-	else{
-		pillars[0].kill();
-		pillars[1].kill();
-		pillars[2].kill();
+function checkObjective(){
+	if (pillars[pillars.objective].slot[0] != null){
+		player.setWinState();
 	}
 }
 
@@ -57,6 +76,7 @@ function pushSegment(segment){
 		if( segment.id < this.slot[1].id ){
 			this.slot[0] = segment;
 			this.setSegmentPosition(segment, 0);
+			this.checkObjective();
 			return true;
 		}
 	}

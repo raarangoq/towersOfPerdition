@@ -6,7 +6,7 @@ function addPlayer(){
 	game.physics.enable(player, Phaser.Physics.ARCADE);
 	player.body.collideWorldBounds = true;
 	player.scale.setTo(1.3, 1.3);
-	player.body.setSize(30, 34, 19 + 9, 17 + 15);   // Reajustar el collider del jugador, para que solo cubra el cuerpo
+	player.body.setSize(30, 34, 19 + 9, 17 + 5);   // Reajustar el collider del jugador, para que solo cubra el cuerpo
 	player.body.gravity.y = 200;
 
 	player.inGround = false;
@@ -31,6 +31,9 @@ function addPlayer(){
 	player.is_attacking = false;
 	player.speed = 200;
 	player.highSpeed = 400;
+	player.flySpeed = 20;
+	player.timeOfTouchWall = game.time.now;
+	player.timeToDownPlatform = game.time.now;
 	player.health = game.global.health;
 	player.hitDamage = 10;
 	player.timeBetweenAttacks = 500;
@@ -45,6 +48,7 @@ function addPlayer(){
 	player.attacking = attacking;
 	player.hitPlayer = hitPlayer;
 	player.movePlayer = movePlayer;
+	player.setVelocity = setPlayerVelocity;
 	player.playAnimations = playAnimations;
 	player.toAttack = toAttack;
 	player.update = updatePlayer;
@@ -60,6 +64,7 @@ function addPlayer(){
 	player.setWinState = setWinState;
 
 	player.overlapPillar = playerOverlapPillar;
+	player.restart = restartPlayer;
 
 	// Se agregan las animaciones del jugador al instanciar uno
 	addPlayerAnimations();
@@ -158,58 +163,82 @@ function playerSetDrawOrder(){
 	inkImage.bringToTop();
 }
 
+function setPlayerVelocity(direction, jumpInWall){
+	if(player.body.touching.down || jumpInWall){
+		this.body.velocity.x = direction * this.speed;
+	}
 
+}
 
 // El movimiento del jugador mediante teclado
 function movePlayer(){
-	if(!this.canMove || game.physics.arcade.isPaused || winState)
+	if(!this.canMove || game.physics.arcade.isPaused || flags['winState'])
 		return;
 
-
-	this.body.velocity.x = 0;
-/*	// Cuando se sueltan las teclas, se deja de mover el jugador, esto se comprueba para cada eje X y Y
-	if (!keyboard.leftKey() && !keyboard.rightKey()){
+	if(player.body.touching.down)
 		this.body.velocity.x = 0;
+	else{
+		if(player.body.touching.right)
+			this.timeOfTouchRightWall = game.time.now;
+		if(player.body.touching.left)
+			this.timeOfTouchLeftWall = game.time.now;
 	}
-	if (!keyboard.upKey() && !keyboard.downKey()){
-		this.body.velocity.y = 0;
-	}
-*/	
+
 	// Al presionar una tecla, el jugador se mueve y se activa una animacion
 	if(keyboard.leftKey()){
 		// Mover a la izquierda
-		this.body.velocity.x = -this.speed;
+		if(game.time.now - this.timeOfTouchRightWall < 500){
+			this.body.velocity.y = -this.speed;
+			this.setVelocity(-1, true);
+		}
+		else
+			this.setVelocity(-1, false);
+
 		this.playAnimations('left');
 		if(!this.is_attacking) 
 			this.attack.changeAttackOrientation('left', this);
 	}
 	else if(keyboard.rightKey()){
 		// Mover a la derecha
-		this.body.velocity.x = this.speed;
-		this.playAnimations('right');
+		if(game.time.now - this.timeOfTouchLeftWall < 500){
+			this.body.velocity.y = -this.speed;
+			this.setVelocity(1, true);
+		}
+		else
+			this.setVelocity(1, false);
+		
+		this.playAnimations("right");
 		if(!this.is_attacking) 
-			this.attack.changeAttackOrientation('right', this)
-	} // arriba
+			this.attack.changeAttackOrientation('right', this);
+	} 
 	
 	if(keyboard.upKey()){
-		if (this.inGround)
+		if (player.body.touching.down){
 			this.body.velocity.y = -this.speed * 1.5;
+		}
 		this.playAnimations('back');
 		if(!this.is_attacking) 
-			this.attack.changeAttackOrientation('back', this)
+			this.attack.changeAttackOrientation('back', this);
 	} // abajo
-	else if(keyboard.downKey() /*&& this.body.y<550*/){
+	else if(keyboard.downKey()){
 //		this.body.velocity.y = this.speed;
 		this.playAnimations('front');
 		if(!this.is_attacking) 
-			this.attack.changeAttackOrientation('front', this)
+			this.attack.changeAttackOrientation('front', this);
+		if(this.body.touching.down)
+			this.timeToDownPlatform = game.time.now;
 	}
-	else{
-		// Permanecer quieto
-		if(!this.is_attacking){
-			this.animations.stop();
-		}
+	
+
+	// Permanecer quieto
+	if(!this.is_attacking &&
+		!keyboard.upKey() &&
+		!keyboard.downKey() &&
+		!keyboard.leftKey() &&
+		!keyboard.rightKey()){
+		this.animations.stop();
 	}
+	
 }
 
 
@@ -258,12 +287,10 @@ function updatePlayer(){
 	// Cuando se presiona la tecla SPACE se produce un ataque por parte del jugador
 	if(keyboard.spaceKey() && !this.is_attacking && game.time.now - this.start_time_pillar_action > 500){
 		if ( this.overlapPillar() ){
-        	text.text = 'true';
 			this.start_time_pillar_action = game.time.now;
         }
         else if (!this.segment){
         	this.toAttack();
-        	text.text = 'false';
         }
 	}
 
@@ -305,6 +332,11 @@ function activateVelocity(){
 
 
 function setWinState(){
-	winState = true;
+	flags['winState'] = true;
 	timeOfWinState = game.time.now;
+}
+
+function restartPlayer(){
+	this.x = 200;
+	this.y = 300;
 }

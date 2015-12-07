@@ -25,6 +25,7 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     game.load.image('background', 'assets/pics/background.png');
     game.load.image('ground', 'assets/pics/levels/ground.png');
     game.load.image('lateralwall', 'assets/pics/levels/lateralwall.png');
+    game.load.image('platform', 'assets/pics/levels/platform.png');
     game.load.image('pillar', 'assets/pics/levels/pillar.png');
     game.load.image('segment', 'assets/pics/levels/segment.png');
 

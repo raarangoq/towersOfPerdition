@@ -4,6 +4,8 @@ function addPause(){
 	pause_menu.fixedToCamera = true;
 	pause_menu.visible = false;
 
+	pause_menu.timeLastPause = game.time.now;
+
 	pause_menu.setDrawOrder = pauseMenuSetDrawOrder;
 	pause_menu.setAlive = pauseMenuSetAlive;
 	pause_menu.update = pauseMenuUpdate;
@@ -17,13 +19,16 @@ function pauseMenuUpdate(){
 }
 
 function pauseGame(){
-	if(game.physics.arcade.isPaused){
-		this.visible = false;
-		game.physics.arcade.isPaused = false;
-	}
-	else{
-		this.visible = true;
-		game.physics.arcade.isPaused = true;
+	if(game.time.now - this.timeLastPause > 500){
+		if(game.physics.arcade.isPaused){
+			this.visible = false;
+			game.physics.arcade.isPaused = false;
+		}
+		else{
+			this.visible = true;
+			game.physics.arcade.isPaused = true;
+		}
+		this.timeLastPause = game.time.now;
 	}
 }
 
