@@ -16,6 +16,8 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     
 
     game.load.image('enemyBar', 'assets/pics/enemys/enemyBar.png');
+    game.load.image('stone', 'assets/pics/enemys/stone.png');
+    game.load.image('bat', 'assets/pics/enemys/segment.png');
 
     game.load.spritesheet('kaboom', 'assets/pics/explode.png', 128, 128);
 
@@ -25,6 +27,7 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     game.load.image('background', 'assets/pics/background.png');
     game.load.image('ground', 'assets/pics/levels/ground.png');
     game.load.image('lateralwall', 'assets/pics/levels/lateralwall.png');
+    game.load.image('door', 'assets/pics/levels/door.png');
     game.load.image('platform', 'assets/pics/levels/platform.png');
     game.load.image('pillar', 'assets/pics/levels/pillar.png');
     game.load.image('segment', 'assets/pics/levels/segment.png');
@@ -45,7 +48,7 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
 
     game.load.audio('item', 'assets/sounds/item.mp3');
     game.load.audio('rugido', 'assets/sounds/rugido.mp3');
-    game.load.audio('new_spider', 'assets/sounds/nace_araña.mp3');
+    game.load.audio('bat', 'assets/sounds/bat.mp3');
     game.load.audio('arrow', 'assets/sounds/flecha.mp3');
     game.load.audio('torpedo', 'assets/sounds/torpedo.mp3');
     game.load.audio('creature', 'assets/sounds/creature.mp3');
@@ -53,6 +56,8 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     game.load.audio('swordair', 'assets/sounds/espada-aire.mp3');
     game.load.audio('scream', 'assets/sounds/grito.mp3');
     game.load.audio('boom', 'assets/sounds/explosion.mp3');
+    game.load.audio('stone', 'assets/sounds/stone.mp3');
+    game.load.audio('door', 'assets/sounds/door.mp3');
 
 	},
 

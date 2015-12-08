@@ -55,6 +55,7 @@ function addPillar(id){
 function checkObjective(){
 	if (pillars[pillars.objective].slot[0] != null){
 		player.setWinState();
+		gui.upScore(200);
 	}
 }
 

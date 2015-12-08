@@ -108,21 +108,22 @@ function attacking(){
 function hitPlayer(segment){
 	
 	this.start_time_hit = game.time.time;
-	if(this.canMove)
-		this.takeDamage(segment.damage);
-	this.canMove = false;
+	if(this.canMove){
+		if(segment.key == 'bat'){
+			this.takeDamage(bats.damage);
+		}
+		else if(segment.key == 'stone'){
+			this.takeDamage(stones.damage);
 
-	if(segment.body.velocity.x == 0 && segment.body.velocity.y == 0){
-		var xDirection = player.body.x - segment.body.x;
-        var yDirection = player.body.y - segment.body.y;
-        var magnitude = Math.sqrt( Math.pow(xDirection, 2) + Math.pow(yDirection, 2) );
-        xDirection /= magnitude;
-        yDirection /= magnitude;
+			this.canMove = false;
 
-        player.body.velocity.x = xDirection * 200;
-        player.body.velocity.y = yDirection * 200;
+			this.body.velocity.y = -100;
+			var xDirection = player.body.x - segment.body.x;
+		    xDirection /= Math.abs(xDirection);
+		    player.body.velocity.x = xDirection * 100;
+		}
 	}
-
+	
 	this.sound_hit.play();
 }
 
@@ -151,9 +152,8 @@ function checkHealth(){
 function playerDies(){
         // When the player dies
 	if (game.global.lives < 1){
-	    player.kill();
-	    enemyBullets.callAll('kill');
-
+	    this.kill();
+	    stones.callAll('kill');
 	    loseImage.visible = true;
 	}
     
@@ -334,9 +334,16 @@ function activateVelocity(){
 function setWinState(){
 	flags['winState'] = true;
 	timeOfWinState = game.time.now;
+	door.scale.setTo(1.5, 2);
+	door.x = 710;
+	door.sound.play();
+
+	stones.callAll('kill');
+	bats.callAll('kill');
 }
 
 function restartPlayer(){
 	this.x = 200;
 	this.y = 300;
+	this.segment = null;
 }

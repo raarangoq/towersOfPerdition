@@ -16,11 +16,17 @@ levels = {
     player.restart();
 
     gui.setAlive(true);
-    gui.upScore(20);
+//    gui.upScore(20);
 
     walls.callAll('revive');
 
+    stones.callAll('kill');
+
     this.setPlatforms();
+
+    door.x = 750;
+    door.scale.setTo(0.5, 2);
+    door.visible = true;
     
 
     pillars.setAlive(true);
@@ -43,6 +49,8 @@ game.time.advancedTiming = true;
 
 
     gui.pauseGame();
+
+    game.global.is_playing = true;
     },
 
     setPlatforms: function(){
@@ -98,23 +106,34 @@ game.time.advancedTiming = true;
             
 
         if (!flags['winState']){
-            if( keyboard.enterKey() ){
-                gui.pauseGame();
+            if (player.alive){
+                if( keyboard.enterKey() )
+                    gui.pauseGame();
+                game.physics.arcade.overlap(player, stones, this.playerHitStone, null, this);
+                game.physics.arcade.overlap(player, bats, this.playerHitBat, null, this);
+                if(player.is_attacking)
+                    game.physics.arcade.overlap(player.attack, bats, this.attackHitBat, null, this);
+            }
+            else{
+                if( keyboard.enterKey() )
+                    this.restart();
             }
         }
         else{
-//alert('entra');
             this.playWinAnimation();
 
             if( keyboard.enterKey() )
                 this.restart();
         }
+
+        
+
+
    
     },
 
     playerTouchWalls: function(){
         game.physics.arcade.collide(player, walls);
-
         // Esta condición para poder subir en una plataforma y bajar de esta atravesandola
         if(player.body.velocity.y >= 0 && game.time.now - player.timeToDownPlatform > 500){
             game.physics.arcade.collide(player, platforms[0]);
@@ -122,6 +141,24 @@ game.time.advancedTiming = true;
         }
 
 
+    },
+
+    playerHitBat: function(player, bat){
+        if(!bat.touchPlayer){
+            player.hitPlayer(bat);
+            bat.touchPlayer = true;
+        }
+    },
+
+    attackHitBat: function(attack, bat){
+        bat.kill();
+        bats.sound.play();
+        gui.upScore(10);
+    },
+
+    playerHitStone: function(player, stone){
+        player.hitPlayer(stone);
+        stone.kill();
     },
 
     addAliens: function(){
@@ -180,7 +217,7 @@ game.time.advancedTiming = true;
 textb.text = game.time.fps;
 //texta.text = player.speed;
 
-text.text = player.body.touching.toSource();
+text.text = flags['winState'];
 
     },
 
@@ -203,6 +240,8 @@ text.text = player.body.touching.toSource();
         winImage.visible = false;
         endImage.visible = false;
         loseImage.visible = false;
+
+        game.global.is_playing = false;
 
         this.restartFlags();
         game.state.start('levels', false);

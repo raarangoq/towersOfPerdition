@@ -7,8 +7,11 @@ var flags = [];
 
 var walls;
 var platforms = [];
+var door;
 var pillars = [];
 var segments = [];
+var stones;
+var bats;
 
 var explosions;
 
@@ -23,6 +26,7 @@ var endImage;
 
 initMenu = {
 	create: function(){
+
 		image = game.add.sprite(0, 0, 'initmenu');
 		game.global.is_playing = false;
 
@@ -54,6 +58,17 @@ initMenu = {
 	    addPlayer();
 	    player.kill();
 
+	    door = game.add.sprite(750, 380, 'door');
+	    door.scale.setTo(0.5, 2);
+	    door.visible = false;
+	    door.sound = game.add.audio('door');
+
+	    addStones();
+	    stones.callAll('kill');
+
+	    addBats();
+	    bats.callAll('kill');
+
 	    //  An explosion pool
 	    explosions = game.add.group();
 	    explosions.createMultiple(15, 'kaboom');
@@ -77,6 +92,7 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 	    link.kill();
 	    scream_sound = game.add.audio('scream');
 
+	    
 
 	    winImage = game.add.sprite(0, 0, 'win');
 	    winImage.visible = false;
