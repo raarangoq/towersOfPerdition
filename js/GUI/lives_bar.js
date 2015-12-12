@@ -12,7 +12,9 @@ function addLivesBar(){
         livesBar.heart[i].scale.setTo(1.5, 1.5);
         livesBar.heart[i].frame = 0;
     }
-    livesBar.health = game.add.text(650, 540, 'Salud : ', { font: '16px Arial', fill: '#fff' });
+    livesBar.health = game.add.text(650, 540, 'Salud : ', { font: "16pt ferney", fill: '#fff' });
+    livesBar.health.stroke = '#000000';
+    livesBar.health.strokeThickness = 3;
 
 
     livesBar.update = updateLivesBar;

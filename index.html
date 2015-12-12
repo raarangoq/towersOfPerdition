@@ -10,13 +10,17 @@
 	<script type="text/javascript" src="js/input.js"></script>
 	
 	<script type="text/javascript" src="js/gameObject/playerBullets.js"></script>
-	<script type="text/javascript" src="js/gameObject/player.js"></script>
-	<script type="text/javascript" src="js/gameObject/attack.js"></script>
+	<script type="text/javascript" src="js/gameObject/player/player.js"></script>
+	<script type="text/javascript" src="js/gameObject/player/attack.js"></script>
+	<script type="text/javascript" src="js/gameObject/player/spiral.js"></script>
 	<script type="text/javascript" src="js/gameObject/item.js"></script>
+	<script type="text/javascript" src="js/gameObject/door.js"></script>
+	<script type="text/javascript" src="js/gameObject/light.js"></script>
 	<script type="text/javascript" src="js/gameObject/tower/pillar.js"></script>
 	<script type="text/javascript" src="js/gameObject/tower/segment.js"></script>
 	<script type="text/javascript" src="js/gameObject/stone.js"></script>
-	<script type="text/javascript" src="js/gameObject/enemys/bat.js"></script>
+	<script type="text/javascript" src="js/gameObject/enemys/scorpion.js"></script>
+	<script type="text/javascript" src="js/gameObject/enemys/boss.js"></script>
 
 
 	<script type="text/javascript" src="js/GUI/gui.js"></script>
@@ -24,6 +28,7 @@
 	<script type="text/javascript" src="js/GUI/lives_bar.js"></script>
 	<script type="text/javascript" src="js/GUI/pause.js"></script>
 	<script type="text/javascript" src="js/GUI/itemsBar.js"></script>
+	<script type="text/javascript" src="js/GUI/timer.js"></script>
 	
 	<script type="text/javascript" src="js/levels/levels.js"></script>
 	<script type="text/javascript" src="js/levels/initMenu.js"></script>
@@ -33,14 +38,16 @@
 
 	<script type="text/javascript" src="js/game.js"></script>	
 
-
-
-
     <style type="text/css">
-        body {
-            margin: 0;
+        @font-face{
+        	font-family: 'ferney'; 
+        	src: url('assets/fonts/04B_03__.TTF');
+        	font-weight: normal;
+        	font-style: normal;
         }
     </style>
 </head>
 <body>
+  <span id="preload-font"></span>
+</body>
 

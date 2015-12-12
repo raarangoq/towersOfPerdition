@@ -1,6 +1,10 @@
 
 var bat;
 
+/*********************************************
+            Group of bats
+********************************************/
+
 function addBats(){
 	bats = game.add.group();
     bats.enableBody = true;
@@ -9,10 +13,10 @@ function addBats(){
     bats.setAll('anchor.x', 0.5);
     bats.setAll('anchor.y', 0.5);
     bats.setAll('outOfBoundsKill', true);
-    stones.setAll('checkWorldBounds', true);
+    bats.setAll('checkWorldBounds', true);
     bats.setAll('body.immovable', true);
 
-    bats.timeOfLastBat = game.time.now;
+    bats.timeOfLastBat = game.time.now + 2000;
     bats.timeBetweenBats = 5000;
 
     bats.forEach(this.setBat, this);
@@ -21,30 +25,29 @@ function addBats(){
 
     bats.inGame = false;
 
-
     bats.sound = game.add.audio('bat', 0.3);
 
     bats.attack = batGroupAttack;
     bats.update = updateBatsGroup;
     bats.updateBat = updateBat;
     bats.setBat = setBat;
+    bats.reset = resetBats;
 }
 
-function setBat(bat){
-	bat.xTarget = player.body.x;
-	bat.yTarget = player.body.y;
-	bat.touchPlayer = false;
+function resetBats(){
+    this.timeOfLastBat = game.time.now + 2000;
+    this.callAll('kill');
+    this.setAll('touchPlayer', false);
 }
+
 
 function batGroupAttack(){
 	bat = this.getFirstExists(false);
     if (bat)
     {
-        
-
         bat.reset(0, 100 + (Math.random() * 300));
-        bat.xTarget = player.body.x;
-        bat.yTarget = player.body.y;
+        this.setBat(bat);
+        this.sound.play();
         game.physics.arcade.moveToXY(bat, bat.xTarget, bat.yTarget, this.speed);
 
         this.timeOfLastBat = game.time.now + this.timeBetweenBats;
@@ -56,12 +59,22 @@ function updateBatsGroup(){
 		return;
 	
 	if( game.time.now - this.timeOfLastBat > 
-		this.timeBetweenBats - (game.global.level * 200)){
+		this.timeBetweenBats - (game.global.level * 800)){
 			this.timeOfLastBat = game.time.now;
 			this.attack();
 	}
 
 	this.forEachAlive(this.updateBat, this);
+}
+
+/*****************************************************
+            Every single bat in the group
+*****************************************************/
+
+function setBat(bat){
+    bat.xTarget = player.body.x;
+    bat.yTarget = player.body.y;
+    bat.touchPlayer = false;
 }
 
 function updateBat(bat){
@@ -71,6 +84,5 @@ function updateBat(bat){
 
 		game.physics.arcade.moveToXY(bat, bat.xTarget, bat.yTarget, this.speed);
 	}
-
-	
 }
+

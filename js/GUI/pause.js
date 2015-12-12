@@ -6,6 +6,7 @@ function addPause(){
 
 	pause_menu.timeLastPause = game.time.now;
 
+
 	pause_menu.setDrawOrder = pauseMenuSetDrawOrder;
 	pause_menu.setAlive = pauseMenuSetAlive;
 	pause_menu.update = pauseMenuUpdate;
@@ -23,6 +24,9 @@ function pauseGame(){
 		if(game.physics.arcade.isPaused){
 			this.visible = false;
 			game.physics.arcade.isPaused = false;
+			
+			gui.timeText.initLevelTime += (game.time.now - this.timeLastPause);
+			light.timeInitLight += (game.time.now - this.timeLastPause);
 		}
 		else{
 			this.visible = true;

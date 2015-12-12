@@ -3,16 +3,13 @@ function GUI(){
 
 	// Objetos y Atributos
 	
-	
-
-	// Vidas
 	this.lives_bar = addLivesBar();
 	this.items_bar = new itemsBar();
-	addScore();
 
-	// Pause
 	this.pause_menu = addPause();
 	this.scoreText = addScore();
+
+	this.timeText = addTimer();
 
 	// Metodos
 	this.update = updateGui;
@@ -20,6 +17,7 @@ function GUI(){
 
 	this.pauseGame = guiPauseGame;
 	this.upScore = guiUpScore;
+	this.restartScore = restartScore;
 	this.changeAbility = changeAbility;
 	this.setAlive = guiSetAlive;
 
@@ -29,12 +27,16 @@ function GUI(){
 
 function updateGui(){
 	this.items_bar.update();
-	this.lives_bar.update();
-	this.pause_menu.update();
+//	this.lives_bar.update();
+//	this.pause_menu.update();
 }
 
 function guiUpScore(value){
 	this.scoreText.upScore(value);
+}
+
+function restartScore(){
+	this.scoreText.restart();
 }
 
 function guiPauseGame(){
@@ -44,6 +46,9 @@ function guiPauseGame(){
 
 // true for take a new item, false when de player uses a item or lose the item
 function changeAbility(take, type){
+	if(type == 'light')
+		return;
+
 	if (take)
 		this.items_bar.setItemsBarAbility(type);
 	else
@@ -54,6 +59,7 @@ function guiSetDrawOrder(){
 	this.pause_menu.setDrawOrder();
 	this.items_bar.setDrawOrder();
 	this.lives_bar.setDrawOrder();
+	this.timeText.setDrawOrder();
 	scoreText.setDrawOrder();
 }
 
@@ -62,6 +68,7 @@ function guiSetAlive(value){
 	this.lives_bar.setAlive(value);
 	this.pause_menu.setAlive(value);
 	this.scoreText.setAlive(value);
+	this.timeText.setAlive(value);
 }
 
 

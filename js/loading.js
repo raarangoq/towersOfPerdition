@@ -4,26 +4,36 @@ var keyboard;
 
 var text;
 
+
 loading = {
 	preload: function(){
 
-text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'});
+    game.time.events.add(2000, function () {       
+        text = game.add.text(20, 540, "Cargando..", 
+            { font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
+    },this);
 
-    game.load.image('torpedo', 'assets/pics/items/bombArrowItem.png');
+//text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'});
+
+    game.load.image('light', 'assets/pics/items/bombArrowItem.png');
     game.load.image('velocity', 'assets/pics/items/speedItem.png');
+    game.load.image('shield', 'assets/pics/items/shield.png');
 
     game.load.spritesheet('heart', 'assets/pics/GUI/heart.png', 14, 16);
     
 
     game.load.image('enemyBar', 'assets/pics/enemys/enemyBar.png');
     game.load.image('stone', 'assets/pics/enemys/stone.png');
-    game.load.image('bat', 'assets/pics/enemys/segment.png');
+    game.load.image('avalanche', 'assets/pics/enemys/avalanche.png');
+    game.load.image('scorpion', 'assets/pics/enemys/segment.png');
+    game.load.image('boss', 'assets/pics/enemys/boss.png');
 
     game.load.spritesheet('kaboom', 'assets/pics/explode.png', 128, 128);
 
     game.load.spritesheet('player', 'assets/pics/player.png', 70, 70);
     game.load.spritesheet('attack','assets/pics/attackzone.png', 30, 30);
-    
+    game.load.image('spiral','assets/pics/espiral.png');
+  
     game.load.image('background', 'assets/pics/background.png');
     game.load.image('ground', 'assets/pics/levels/ground.png');
     game.load.image('lateralwall', 'assets/pics/levels/lateralwall.png');
@@ -31,6 +41,9 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     game.load.image('platform', 'assets/pics/levels/platform.png');
     game.load.image('pillar', 'assets/pics/levels/pillar.png');
     game.load.image('segment', 'assets/pics/levels/segment.png');
+
+    game.load.spritesheet('fire', 'assets/pics/levels/fire.png', 32, 32);
+    game.load.spritesheet('pedestal', 'assets/pics/levels/pedestal.png');
 
     game.load.image('end', 'assets/pics/images/end.png');
     game.load.image('initmenu', 'assets/pics/images/initmenu.png');
@@ -41,7 +54,6 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
 
     game.load.image('healthBar', 'assets/pics/GUI/healthbar.png');
 
-
 	game.load.audio('inicio', 'assets/sounds/inicio.mp3');
     game.load.audio('levelB', 'assets/sounds/levelB.mp3');
     game.load.audio('final', 'assets/sounds/final.mp3');
@@ -50,6 +62,7 @@ text = game.add.text(20, 540, 'Cargando...', { fontSize: '28px', fill: '#ffffff'
     game.load.audio('rugido', 'assets/sounds/rugido.mp3');
     game.load.audio('bat', 'assets/sounds/bat.mp3');
     game.load.audio('arrow', 'assets/sounds/flecha.mp3');
+
     game.load.audio('torpedo', 'assets/sounds/torpedo.mp3');
     game.load.audio('creature', 'assets/sounds/creature.mp3');
     game.load.audio('hit', 'assets/sounds/golpes.mp3');

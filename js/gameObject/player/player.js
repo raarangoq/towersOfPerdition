@@ -21,16 +21,26 @@ function addPlayer(){
 
 	// Atributos variables
 	player.attack = player.addChild(addAttack());
-	
+	player.spiral = player.addChild(addSpiral());
+
+	player.shield = player.addChild(game.add.sprite(17, 10, 'shield'));
+	player.shield.visible = false;
+
+	player.eyes = game.add.sprite( this.x+17, this.y+10, 'shield');
+	player.eyes.visible = false;
+
 	player.haveTorpedo = false;
 	player.timeWithVelocity = 5000;
     player.timeVelocityActivated = game.time.time - 5000;
+
+    player.timeOfLastScorpionAttack = game.time.now;
+    player.timeBetweenScorpionsAttacks = 2000;
 
 	player.canMove = true;
 	player.direction = "";
 	player.is_attacking = false;
 	player.speed = 200;
-	player.highSpeed = 400;
+	player.highSpeed = 300;
 	player.flySpeed = 20;
 	player.timeOfTouchWall = game.time.now;
 	player.timeToDownPlatform = game.time.now;
@@ -55,6 +65,8 @@ function addPlayer(){
 
 	player.activateAbility = activateAbility;
 	player.activateVelocity = activateVelocity;
+	player.activateShield = activateShield;
+	player.activateLight = activateLight;
 
 	player.takeDamage = playerTakeDamage;
 	player.checkHealth = checkHealth;
@@ -105,22 +117,25 @@ function attacking(){
 }
 
 
-function hitPlayer(segment){
+function hitPlayer(enemy){
 	
 	this.start_time_hit = game.time.time;
 	if(this.canMove){
-		if(segment.key == 'bat'){
-			this.takeDamage(bats.damage);
+		if(enemy.key == 'scorpion'){
+			if(!this.shield.visible)
+				this.takeDamage(scorpions.damage);
+			else
+				return;
 		}
-		else if(segment.key == 'stone'){
+		else if(enemy.key == 'stone' || enemy.key == 'boss'){
 			this.takeDamage(stones.damage);
+			this.shield.visible = false;
 
 			this.canMove = false;
+			this.spiral.visible = true;
 
-			this.body.velocity.y = -100;
-			var xDirection = player.body.x - segment.body.x;
-		    xDirection /= Math.abs(xDirection);
-		    player.body.velocity.x = xDirection * 100;
+			if(flags['timeOut'])
+				this.playerDies(true);
 		}
 	}
 	
@@ -149,11 +164,13 @@ function checkHealth(){
     }
 }
 
-function playerDies(){
+function playerDies(timeOut){
         // When the player dies
-	if (game.global.lives < 1){
+	if (game.global.lives < 1 || timeOut){
+	    this.eyes.visible = false;
 	    this.kill();
-	    stones.callAll('kill');
+
+//	    stones.callAll('kill');
 	    loseImage.visible = true;
 	}
     
@@ -164,9 +181,9 @@ function playerSetDrawOrder(){
 }
 
 function setPlayerVelocity(direction, jumpInWall){
-	if(player.body.touching.down || jumpInWall){
+//	if(player.body.touching.down || jumpInWall){
 		this.body.velocity.x = direction * this.speed;
-	}
+//	}
 
 }
 
@@ -175,14 +192,14 @@ function movePlayer(){
 	if(!this.canMove || game.physics.arcade.isPaused || flags['winState'])
 		return;
 
-	if(player.body.touching.down)
+//	if(player.body.touching.down)
 		this.body.velocity.x = 0;
-	else{
+//	else{
 		if(player.body.touching.right)
 			this.timeOfTouchRightWall = game.time.now;
 		if(player.body.touching.left)
 			this.timeOfTouchLeftWall = game.time.now;
-	}
+//	}
 
 	// Al presionar una tecla, el jugador se mueve y se activa una animacion
 	if(keyboard.leftKey()){
@@ -262,8 +279,13 @@ function toAttack(){
 
 // Se ejecutan las funciones del jugador, como moverse y atacar
 function updatePlayer(){
-	if(game.time.elapsedSince(this.start_time_hit) > 1000 )
+	if(game.time.elapsedSince(this.start_time_hit) > 1500 ){
 		this.canMove = true;
+		this.spiral.visible = false;
+	}
+
+	this.eyes.x = this.x+17;
+	this.eyes.y = this.y+10;
 
 	this.movePlayer();
 	this.attacking();
@@ -284,7 +306,7 @@ function updatePlayer(){
 		this.segment.y = this.body.y - 45;
     }
 
-	// Cuando se presiona la tecla SPACE se produce un ataque por parte del jugador
+	// Cuando se presiona la tecla SPACE, se produce un ataque o se interactúa con un pillar
 	if(keyboard.spaceKey() && !this.is_attacking && game.time.now - this.start_time_pillar_action > 500){
 		if ( this.overlapPillar() ){
 			this.start_time_pillar_action = game.time.now;
@@ -318,32 +340,44 @@ function playerOverlapPillar(){
 
 function activateAbility(type){
 	gui.upScore(50);
-    if( type == "torpedo" ){
-        this.haveTorpedo = true;
-    }  
-    else if ( type == "velocity"){
+    if ( type == "velocity"){
         this.activateVelocity();
     } 
+    else if(type == 'shield'){
+    	this.activateShield();
+    }
+    else if(type == 'light'){
+    	this.activateLight();
+    }
 }
 
 function activateVelocity(){
     this.timeVelocityActivated = game.time.time;
 }
 
+function activateShield(){
+	this.shield.visible = true;
+}
+
+function activateLight(){
+	light.addTime(20000);
+}
+
 
 function setWinState(){
 	flags['winState'] = true;
 	timeOfWinState = game.time.now;
-	door.scale.setTo(1.5, 2);
-	door.x = 710;
-	door.sound.play();
 
+	door.move();
+	
 	stones.callAll('kill');
-	bats.callAll('kill');
+	scorpions.callAll('kill');
 }
 
 function restartPlayer(){
 	this.x = 200;
 	this.y = 300;
 	this.segment = null;
+	this.shield.visible = false;
+	this.eyes.visible = true;
 }

@@ -3,7 +3,6 @@
 function addAttack(){
 	var attack = game.make.sprite(19, 34 + 16, 'attack');
 	game.physics.enable(attack, Phaser.Physics.ARCADE);
-	attack.body.colliderWorldBounds = true;
 
 	attack.frame = 3;
 	attack.hitEnemy = false;

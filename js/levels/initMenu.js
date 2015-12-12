@@ -5,13 +5,17 @@ var player;
 
 var flags = [];
 
+var light;
+
 var walls;
 var platforms = [];
 var door;
 var pillars = [];
 var segments = [];
 var stones;
-var bats;
+var scorpions;
+var boss;
+
 
 var explosions;
 
@@ -38,15 +42,14 @@ initMenu = {
 		background.kill();
 	    //game.stage.backgroundColor = '#aaaaaa';
 
-	   
-
-	    
-
 	    this.addWalls();
 	    walls.callAll('kill');
 	    this.addPlatforms(),
 	    platforms[0].kill();
 	    platforms[1].kill();
+
+	    light = addLight();
+	    light.kill();
 
 	    addPillars();
 	    pillars.setAlive(false);
@@ -58,16 +61,18 @@ initMenu = {
 	    addPlayer();
 	    player.kill();
 
-	    door = game.add.sprite(750, 380, 'door');
-	    door.scale.setTo(0.5, 2);
-	    door.visible = false;
-	    door.sound = game.add.audio('door');
+	    door = addDoor();
+	    door.setAlive(false);
 
 	    addStones();
 	    stones.callAll('kill');
 
-	    addBats();
-	    bats.callAll('kill');
+	    addScorpions();
+	    scorpions.callAll('kill');
+
+	    addBoss();
+	    boss.kill();
+
 
 	    //  An explosion pool
 	    explosions = game.add.group();
@@ -92,8 +97,6 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 	    link.kill();
 	    scream_sound = game.add.audio('scream');
 
-	    
-
 	    winImage = game.add.sprite(0, 0, 'win');
 	    winImage.visible = false;
 	    loseImage = game.add.sprite(0, 0, 'lose');
@@ -103,11 +106,14 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 
 	    gui = new GUI();
 	    gui.setAlive(false);	
+
 	},
 
 	addFlags: function(){
 		flags['winAnimationPointA'] = false;
+		flags['winAnimationPointB'] = false;
 		flags['winState'] = false;
+		flags['timeOut'] = false;
         flags['playedA'] = false;
         flags['playedB'] = false;
         flags['playedC'] = false;
@@ -155,6 +161,7 @@ textb = game.add.text(20, 200, 'Cargando...', { fontSize: '16px', fill: '#ffffff
 	update: function(){
 		if(keyboard.enterKey()){
 //			game.global.is_playing = true;
+image.destroy();
 			game.state.start('levels', false);
 		}
 

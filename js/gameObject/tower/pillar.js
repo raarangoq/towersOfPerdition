@@ -1,5 +1,9 @@
 
 
+/************************************************
+		Group of pillars
+******************************************/
+
 function addPillars(){
 
 	pillars[0] = addPillar(0);
@@ -7,6 +11,7 @@ function addPillars(){
 	pillars[2] = addPillar(2);
 
 	pillars.objective = 2;
+	pillars.slotObjetive = 2;
 
 	pillars.setAlive = pillarsSetAlive;
 	pillars.restart = restartPillars;
@@ -31,11 +36,23 @@ function restartPillars(){
 		this[i].slot[0] = null;
 		this[i].slot[1] = null;
 		this[i].slot[2] = null;
+		this[i].slot[3] = null;
+		this[i].slot[4] = null;
 	}
+	if(game.global.level <= 2)
+		this.slotObjetive = 2;
+	else if(game.global.level <=4)
+		this.slotObjetive = 1;
+	else
+		this.slotObjetive = 0;
 }
 
+/***************************************
+		Every single pillar
+****************************************/
+
 function addPillar(id){
-	var pillar = game.add.sprite(100 + (id * 200), 300, 'pillar');
+	var pillar = game.add.sprite(100 + (id * 200), 430, 'pillar');
 	game.physics.enable(pillar, Phaser.Physics.ARCADE);
 	pillar.scale.setTo(0.5, 0.5);
 
@@ -43,6 +60,8 @@ function addPillar(id){
 	pillar.slot[0] = null;
 	pillar.slot[1] = null;
 	pillar.slot[2] = null;
+	pillar.slot[3] = null;
+	pillar.slot[4] = null;
 
 	pillar.push = pushSegment;
 	pillar.pop = popSegment;
@@ -53,7 +72,7 @@ function addPillar(id){
 }
 
 function checkObjective(){
-	if (pillars[pillars.objective].slot[0] != null){
+	if (pillars[pillars.objective].slot[pillars.slotObjetive] != null){
 		player.setWinState();
 		gui.upScore(200);
 	}
@@ -61,19 +80,28 @@ function checkObjective(){
 
 
 function pushSegment(segment){
-	if(this.slot[2] == null){
-		this.slot[2] = segment;
-		this.setSegmentPosition(segment, 2);	
+	if(this.slot[4] == null){
+		this.slot[4] = segment;
+		this.setSegmentPosition(segment, 4);	
 		return true;
 	}
-	else if(this.slot[1] == null){
-		if( segment.id < this.slot[2].id ){
-			this.slot[1] = segment;
-			this.setSegmentPosition(segment, 1);
-			return true;
+
+	for (var i=3; i>=1; i--){
+		if(this.slot[i] == null){
+			if(this.slot[i+1] == null)
+				return false;
+			if( segment.id < this.slot[i+1].id ){
+				this.slot[i] = segment;
+				this.setSegmentPosition(segment, i);
+				this.checkObjective();
+				return true;
+			}
 		}
 	}
-	else if(this.slot[0] == null){
+
+	if(this.slot[1] == null)
+		return false;
+	if(this.slot[0] == null){
 		if( segment.id < this.slot[1].id ){
 			this.slot[0] = segment;
 			this.setSegmentPosition(segment, 0);
@@ -81,31 +109,22 @@ function pushSegment(segment){
 			return true;
 		}
 	}
-
 	return false;
-	
 }
 
 function popSegment(){
-	var segment = null;
-	if(this.slot[0] != null){
-		segment = this.slot[0];
-		this.slot[0] = null;
+	var segment = null
+	for(var i=0; i<5; i++){
+		if(this.slot[i] != null){
+			segment = this.slot[i];
+			this.slot[i] = null;
+			return segment;
+		}
 	}
-	else if(this.slot[1] != null){
-		segment = this.slot[1];
-		this.slot[1] = null;
-	}
-	else if(this.slot[2] != null){
-		segment = this.slot[2];
-		this.slot[2] = null;
-	}
-
-	return segment;
 }
 
 function setSegmentPosition(segment, slot){
-	segment.x = this.body.x;
-	segment.y = this.body.y + (slot * 40);
+	segment.x = this.x;
+	segment.y = this.y + (slot * 30) - 130;
 
 }

@@ -10,7 +10,6 @@ function addStones(){
     stones.setAll('anchor.y', 0.5);
     stones.setAll('outOfBoundsKill', true);
     stones.setAll('checkWorldBounds', true);
-    stones.setAll('body.immovable', true);
 
     stones.timeOfLastStone = game.time.now;
     stones.timeBetweenStones = 3000;
@@ -18,11 +17,19 @@ function addStones(){
     stones.damage = 50;
     stones.speed = 300;
 
+    stones.initAvalanche = false;
+
     stones.sound = game.add.audio("stone", 0.2);
 
 
+    stones.avalanche = game.add.sprite(0, -600, 'avalanche');
+    game.physics.enable(stones.avalanche, Phaser.Physics.ARCADE);
+    stones.avalanche.visible = false;
+
     stones.dropStone = dropStone;
     stones.update = updateStone;
+    stones.reset = resetStones;
+    stones.startAvalanche = startAvalanche;
 }
 
 function dropStone(){
@@ -34,21 +41,54 @@ function dropStone(){
         stone.reset(100 + (Math.random() * 600), 0);
 
         stone.body.velocity.y = this.speed;
-        stone.body.angularVelocity = Math.random() * 90;
+        
         stone.scale.x = 0.5 + (Math.random());
         stone.scale.y = 0.5 + (Math.random()); 
 
-        this.timeOfLastStone = game.time.now + this.timeBetweenStones;
+        if(flags['winState']){
+            stone.scale.x *= 1.5;
+            stone.scale.y *= 1.5;
+        }
+        else
+            stone.body.angularVelocity = Math.random() * 90;
+
+
+        this.timeOfLastStone = game.time.now;
     }
 }
 
 function updateStone(){
-	if( game.physics.arcade.isPaused || flags['winState'] || !game.global.is_playing)
+	if( game.physics.arcade.isPaused || !game.global.is_playing)
 		return;
 	
-	if( game.time.now - this.timeOfLastStone > 
-		this.timeBetweenStones - (game.global.level * 100)){
+	if(!flags['winState'] && !flags['timeOut']) {
+        if( game.time.now - this.timeOfLastStone > 
+		this.timeBetweenStones - (game.global.level * 400)){
 			this.timeOfLastStone = game.time.now;
 			this.dropStone();
-	}
+	   }
+    }
+    else{
+        if (this.initAvalanche && game.time.now - this.timeOfLastStone > 200){
+            this.timeOfLastStone = game.time.now;
+            this.dropStone();
+        }
+        if( this.avalanche.y > 25)
+            this.avalanche.body.velocity.y = 0;
+    }
+}
+
+function resetStones(){
+    this.timeOfLastStone = game.time.now + 2000;
+    this.callAll('kill');
+    this.initAvalanche = false;
+    this.avalanche.y = -600;
+    this.avalanche.visible = false;
+    this.avalanche.body.velocity.y = 0;
+}
+
+function startAvalanche(){
+    this.initAvalanche = true;
+    this.avalanche.visible = true;
+    this.avalanche.body.velocity.y = this.speed / 2;
 }
