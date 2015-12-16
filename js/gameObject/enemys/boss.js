@@ -14,7 +14,10 @@ function addBoss(){
     else
         boss.target = boss.PointA;
 
-    boss.damage = 50;
+    boss.damage = 25;
+
+    boss.killSound = game.add.audio('creature');
+    boss.sound = game.add.audio('boss');
 
     boss.move = moveBossToTarget;
     boss.update = updateBoss;
@@ -26,6 +29,7 @@ function addBoss(){
 function moveBossToTarget(target){
 	this.target = target;
     game.physics.arcade.moveToXY(this, this.target, this.y, this.speed);
+    this.sound.play();
 }
 
 

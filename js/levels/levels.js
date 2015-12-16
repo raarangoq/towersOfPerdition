@@ -3,13 +3,13 @@ var timeOfWinState;
 
 var items;
 
-var text;
 var textb;
 
 levels = {
     create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     
+endImage.visible = false; 
 
     background.revive();
 
@@ -50,19 +50,20 @@ levels = {
     }
     pillars[2].push(segments[2]);
     pillars[2].push(segments[1]);
-    pillars[0].push(segments[0]);
+    pillars[1].push(segments[0]);
 
 
 
     sound_backgroud.play();
-
+dialog.kill();
 
 game.time.advancedTiming = true;
 
 
-    gui.pauseGame();
+    
 
     game.global.is_playing = true;
+    gui.pauseGame();
     },
 
     setPlatforms: function(){
@@ -157,12 +158,9 @@ game.time.advancedTiming = true;
             game.physics.arcade.collide(stones, stones);
 
             if(game.global.level == 5){
-                if(game.physics.arcade.overlap(boss, stones)){
-                    boss.kill();
-                    this.addExplosion(boss.x, boss.y);
-                    this.addExplosion(boss.x + 80, boss.y);
-                    this.addExplosion(boss.x + 40, boss.y + 40);
-                }
+                game.physics.arcade.overlap(boss, stones, this.killBoss, null, this);
+                    
+                
             }
         }
     },
@@ -191,13 +189,23 @@ game.time.advancedTiming = true;
 
         var prob = Math.random();
         if(items == null){
-            if(prob < 0.1)
+            if(prob < 0.2)
                 items = addItem('shield');
-            else if( prob < 0.2)
+            else if( prob < 0.4)
                 items = addItem('velocity');
-            else if(prob < 0.3)
+            else if(prob < 0.6)
                 items = addItem('light');
         }
+
+        scorpions.killSound.play();
+    },
+
+    killBoss: function(boss, stone){
+        boss.killSound.play();
+        boss.kill();
+        this.addExplosion(boss.x, boss.y);
+        this.addExplosion(boss.x + 80, boss.y);
+        this.addExplosion(boss.x + 40, boss.y + 40);
     },
 
     playerHitStone: function(player, stone){
@@ -238,7 +246,7 @@ game.time.advancedTiming = true;
                 player.body.velocity.x = 0;
                 player.animations.stop();
             }
-            else if(game.time.now - timeOfWinState < 4000){
+            else if(game.time.now - timeOfWinState < 6000){
                 if(!flags['winAnimationPointA']){
                     game.physics.arcade.moveToXY(player, 800, 300, 200);
                     player.playAnimations("right");
@@ -246,7 +254,7 @@ game.time.advancedTiming = true;
                     flags['winAnimationPointA'] = true;
                 }
             }
-            else if(game.time.now - timeOfWinState < 6000){
+            else if(game.time.now - timeOfWinState < 8000){
                 if(!flags['winAnimationPointB']){
                     stones.startAvalanche();
                     flags['winAnimationPointB'] = true;
@@ -283,7 +291,6 @@ game.time.advancedTiming = true;
 textb.text = game.time.fps;
 //texta.text = player.speed;
 
-//text.text = Math.floor((game.time.now - light.timeInitLight) / 1000);
 
     },
 
@@ -292,9 +299,6 @@ textb.text = game.time.fps;
 
         if (player.alive){
             game.global.level++;
-            if (game.global.level == 6){
-                game.global.level = 1;
-            }
         }
         else{
             game.global.lives = 3;
@@ -310,7 +314,7 @@ textb.text = game.time.fps;
             items.destroy();
         items = null;
 
-        stones.callAll('kill');
+        stones.reset();
         
         winImage.visible = false;
         endImage.visible = false;
@@ -319,7 +323,19 @@ textb.text = game.time.fps;
         game.global.is_playing = false;
 
         this.restartFlags();
-        game.state.start('levels', false);
+
+        if(game.global.level <= 5)
+            game.state.start('levels', false);
+        else {
+            player.kill();
+            player.eyes.kill();
+            pillars.setAlive(false);
+            segments.setAlive(false);
+            platforms[0].kill();
+            platforms[1].kill();
+            light.kill();
+            game.state.start('end', false);
+        }
 
     },
 
@@ -335,6 +351,7 @@ textb.text = game.time.fps;
         flags['playedC'] = false;
         flags['playedD'] = false;
         flags['playedE'] = false;
+        flags['playedF'] = false;
     },
 
 

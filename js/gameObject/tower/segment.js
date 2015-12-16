@@ -11,14 +11,14 @@ function addSegments(){
 }
 
 function addSegment(id){
-	var segment = game.add.sprite(150 + (id * 200), 200, 'segment');
+	var segment = game.add.sprite(150 + (id * 200), 200, 'segment-' + (id + 1));
 //	segment.scale.setTo(0.5, 0.5);
 	game.physics.enable(segment, Phaser.Physics.ARCADE);
 
 	segment.id = id + 1;
-	var text = game.add.text(5, 5, id, 
-		{ font: "14pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
-	segment.addChild(text);
+	//var text = game.add.text(5, 5, id, 
+	//	{ font: "14pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3 });
+	//segment.addChild(text);
 
 	return segment;
 }

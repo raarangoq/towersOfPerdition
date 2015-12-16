@@ -17,7 +17,7 @@ function addLight(){
 	setFireAnimations(light.fire3);
 
 	light.timeInitLight = game.time.now;
-	light.durationOfLight = 20000;
+	light.durationOfLight = 30000;
 
 	light.setDark = setGameInDark;
 	light.update = updateLight;
@@ -96,8 +96,10 @@ function setGameInDark(value){
     segments[1].renderable = !value;
     segments[2].renderable = !value;
 
-    if(game.global.level >= 5)
+    if(game.global.level >= 5){
+    	boss.renderable = !value;
         segments[4].renderable = !value;
+    }
     if(game.global.level >= 3)
         segments[3].renderable = !value; 
 }

@@ -20,6 +20,9 @@ function pauseMenuUpdate(){
 }
 
 function pauseGame(){
+	if(!game.global.is_playing)
+		return;
+
 	if(game.time.now - this.timeLastPause > 500){
 		if(game.physics.arcade.isPaused){
 			this.visible = false;

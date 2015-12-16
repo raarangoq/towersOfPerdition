@@ -12,9 +12,9 @@ function addStones(){
     stones.setAll('checkWorldBounds', true);
 
     stones.timeOfLastStone = game.time.now;
-    stones.timeBetweenStones = 3000;
+    stones.timeBetweenStones = 6000;
 
-    stones.damage = 50;
+    stones.damage = 25;
     stones.speed = 300;
 
     stones.initAvalanche = false;
@@ -62,8 +62,7 @@ function updateStone(){
 		return;
 	
 	if(!flags['winState'] && !flags['timeOut']) {
-        if( game.time.now - this.timeOfLastStone > 
-		this.timeBetweenStones - (game.global.level * 400)){
+        if( game.time.now - this.timeOfLastStone > this.timeBetweenStones){
 			this.timeOfLastStone = game.time.now;
 			this.dropStone();
 	   }
@@ -80,6 +79,7 @@ function updateStone(){
 
 function resetStones(){
     this.timeOfLastStone = game.time.now + 2000;
+    this.timeBetweenStones = 6000 - (game.global.level * 600);
     this.callAll('kill');
     this.initAvalanche = false;
     this.avalanche.y = -600;

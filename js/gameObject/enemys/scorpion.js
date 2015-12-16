@@ -18,15 +18,16 @@ function addScorpions(){
     scorpions.setAll('marchSetted', false);
 
     scorpions.timeOfLastScorpion = game.time.now + 2000;
-    scorpions.timeBetweenScorpions = 5000;
+    scorpions.timeBetweenScorpions = 10000;
 
     scorpions.forEach(this.setScorpion, this);
-    scorpions.damage = 20;
+    scorpions.damage = 10;
     scorpions.speed = 100;
 
     scorpions.inGame = false;
 
-//    scorpions.sound = game.add.audio('scorpion', 0.3);
+    scorpions.killSound = game.add.audio('rugido');
+    scorpions.newSound = game.add.audio('scorpion');
 
     scorpions.attack = scorpionsGroupAttack;
     scorpions.update = updateScorpionsGroup;
@@ -39,6 +40,9 @@ function resetScorpions(){
     this.timeOfLastScorpion = game.time.now + 2000;
     this.callAll('kill');
     this.setAll('marchSetted', false);
+
+    this.timeBetweenScorpions = 10000 - (game.global.level * 1400);
+
 }
 
 
@@ -49,8 +53,8 @@ function scorpionsGroupAttack(){
         scorpion.reset(100 + (Math.random() * 500), 0);
         this.setScorpion(scorpion);
 //        this.sound.play();
-        this.timeOfLastScorpion = game.time.now + this.timeBetweenScorpions;
-
+        this.timeOfLastScorpion = game.time.now/* + this.timeBetweenScorpions*/;
+        this.newSound.play();
     }
 }
 
@@ -58,8 +62,7 @@ function updateScorpionsGroup(){
 	if( game.physics.arcade.isPaused || flags['winState'] || !game.global.is_playing)
 		return;
 	
-	if( game.time.now - this.timeOfLastScorpion > 
-		this.timeBetweenScorpions - (game.global.level * 800)){
+	if( game.time.now - this.timeOfLastScorpion > this.timeBetweenScorpions){
 			this.timeOfLastScorpion = game.time.now;
 			this.attack();
 	}

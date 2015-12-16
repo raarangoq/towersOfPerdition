@@ -18,7 +18,7 @@ function addTimer(){
 
 
 function updateTimer(){
-    if(game.physics.arcade.isPaused)
+    if(game.physics.arcade.isPaused || game.global.lives <= 0 || game.global.level > 5)
         return;
 
     this.text = this.timerString;
@@ -54,5 +54,10 @@ function timerSetAlive(value){
 function restartTimer(){
     this.initLevelTime = game.time.now;
     flags['timeOut'] = false;
-    this.levelTime = 60000 + (game.global.level * 5000);
+    this.levelTime = 120000 + (game.global.level * 20000);
+
+    if(game.global.level >= 3)
+        this.levelTime += 120000;
+    if(game.global.level >= 5)
+        this.levelTime += 120000;
 }

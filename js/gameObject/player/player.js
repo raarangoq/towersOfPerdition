@@ -379,5 +379,5 @@ function restartPlayer(){
 	this.y = 300;
 	this.segment = null;
 	this.shield.visible = false;
-	this.eyes.visible = true;
+	this.eyes.revive();
 }
