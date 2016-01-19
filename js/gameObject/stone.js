@@ -5,7 +5,11 @@ function addStones(){
 	stones = game.add.group();
     stones.enableBody = true;
     stones.physicsBodyType = Phaser.Physics.ARCADE;
-    stones.createMultiple(30, 'stone');
+    stones.createMultiple(6, 'stone1');
+    stones.createMultiple(6, 'stone2');
+    stones.createMultiple(6, 'stone3');
+    stones.createMultiple(6, 'stone4');
+    stones.createMultiple(6, 'stone5');
     stones.setAll('anchor.x', 0.5);
     stones.setAll('anchor.y', 0.5);
     stones.setAll('outOfBoundsKill', true);
@@ -22,7 +26,7 @@ function addStones(){
     stones.sound = game.add.audio("stone", 0.2);
 
 
-    stones.avalanche = game.add.sprite(0, -600, 'avalanche');
+    stones.avalanche = game.add.sprite(-200, -800, 'avalanche');
     game.physics.enable(stones.avalanche, Phaser.Physics.ARCADE);
     stones.avalanche.visible = false;
 
@@ -72,8 +76,10 @@ function updateStone(){
             this.timeOfLastStone = game.time.now;
             this.dropStone();
         }
-        if( this.avalanche.y > 25)
+        if( this.avalanche.y > -200){
             this.avalanche.body.velocity.y = 0;
+            this.avalanche.body.acceleration.y = 0;
+        }
     }
 }
 
@@ -82,13 +88,14 @@ function resetStones(){
     this.timeBetweenStones = 6000 - (game.global.level * 600);
     this.callAll('kill');
     this.initAvalanche = false;
-    this.avalanche.y = -600;
-    this.avalanche.visible = false;
+    this.avalanche.y = -800;
+    this.avalanche.visible = true;
     this.avalanche.body.velocity.y = 0;
+    this.avalanche.body.acceleration.y = 0;
 }
 
 function startAvalanche(){
     this.initAvalanche = true;
-    this.avalanche.visible = true;
-    this.avalanche.body.velocity.y = this.speed / 2;
+//    this.avalanche.visible = true;
+    this.avalanche.body.acceleration.y = this.speed / 4;
 }

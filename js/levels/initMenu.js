@@ -7,7 +7,8 @@ var flags = [];
 
 var light;
 
-var walls;
+var wall;
+var ground;
 var platforms = [];
 var door;
 var pillars = [];
@@ -51,7 +52,9 @@ initMenu = {
 	    //game.stage.backgroundColor = '#aaaaaa';
 
 	    this.addWalls();
-	    walls.callAll('kill');
+	    wall.kill();
+	    ground.kill();
+
 	    this.addPlatforms(),
 	    platforms[0].kill();
 	    platforms[1].kill();
@@ -72,14 +75,17 @@ initMenu = {
 	    door = addDoor();
 	    door.setAlive(false);
 
-	    addStones();
-	    stones.callAll('kill');
-
 	    addScorpions();
 	    scorpions.callAll('kill');
 
 	    addBoss();
 	    boss.kill();
+	    boss.eyes.kill();
+
+	    addStones();
+	    stones.callAll('kill');
+
+	    
 
 
 	    //  An explosion pool
@@ -101,11 +107,7 @@ initMenu = {
 	    dialog = game.add.sprite(230, 300, 'dialog');
 	    dialog.kill();
 
-	    texta = game.add.text(dialog.x + dialog.width / 2, dialog.y + dialog.height / 2, '', 
-			{ font: "12pt ferney", fill: '#fff', stroke:  '#000000', strokeThickness: 3,
-			wordWrap: true, wordWrapWidth: dialog.width, align: "center"});
-	    texta.anchor.set(0.5);
-	    texta.kill();
+	    
 
 
 	    this.addMedusa();
@@ -114,6 +116,11 @@ initMenu = {
 
 	    this.addLink();
 
+	    texta = game.add.text(dialog.x + dialog.width / 2, dialog.y + dialog.height / 2, '', 
+			{ font: "12pt ferney", fill: '#fff', stroke:  '#000000', strokeThickness: 3,
+			wordWrap: true, wordWrapWidth: dialog.width, align: "center"});
+	    texta.anchor.set(0.5);
+	    texta.kill();
 
 	   
 
@@ -137,14 +144,14 @@ initMenu = {
 	},
 
 	addWalls: function(){
-		walls = game.add.group();
-		walls.enableBody = true;
 
-		var wall = walls.create(0, 450, 'ground');
-		wall.body.immovable = true;
-//		wall.body.setSize(800, 30, 0, 50);
+		ground = game.add.sprite(0, 485, 'ground');
+		game.physics.enable(ground, Phaser.Physics.ARCADE);
+		ground.body.immovable = true;
+		ground.renderable = false;
 
-		wall = walls.create(0, -130, 'door-1');
+		wall = game.add.sprite(0, -100, 'door-1');
+		game.physics.enable(wall, Phaser.Physics.ARCADE);
 		wall.body.immovable = true;
 
 		
@@ -175,7 +182,7 @@ initMenu = {
 		if(keyboard.enterKey()){
 			image.destroy();
 			
-			//game.state.start('levels', false);
+			//game.state.start('end', false);
 			game.state.start('introVideo', false);
 		}
 	},

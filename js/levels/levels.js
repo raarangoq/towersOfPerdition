@@ -21,7 +21,9 @@ endImage.visible = false;
     light.revive();
     light.restart();
 
-    walls.callAll('revive');
+    wall.revive();
+    ground.revive();
+    ground.renderable = false;
 
     stones.reset();
     scorpions.reset();
@@ -50,7 +52,7 @@ endImage.visible = false;
     }
     pillars[2].push(segments[2]);
     pillars[2].push(segments[1]);
-    pillars[1].push(segments[0]);
+    pillars[0].push(segments[0]);
 
 
 
@@ -69,12 +71,12 @@ game.time.advancedTiming = true;
     setPlatforms: function(){
         if(game.global.level == 1){
             platforms[0].kill();
-            platforms[0].position.setTo(350, 300);
+            platforms[0].position.setTo(350, 320);
             platforms[1].kill();
-            platforms[1].position.setTo(50, 200);
+            platforms[1].position.setTo(50, 220);
 
-            pillars[1].y = 430;
-            pillars[2].y = 430;
+            pillars[1].y = 460;
+            pillars[2].y = 460;
         }
         if(game.global.level == 2){
             platforms[0].revive();
@@ -93,21 +95,21 @@ game.time.advancedTiming = true;
         }
         else if( game.global.level == 4 ){
             platforms[0].revive();
-            platforms[0].position.setTo(450, 350);
+            platforms[0].position.setTo(450, 370);
             platforms[1].revive();
-            platforms[1].position.setTo(140, 250);
+            platforms[1].position.setTo(140, 270);
 
-            pillars[1].y = 230;
-            pillars[2].y = 330;
+            pillars[1].y = 250;
+            pillars[2].y = 350;
         }
         else if( game.global.level == 5 ){
             platforms[0].revive();
-            platforms[0].position.setTo(450, 150);
+            platforms[0].position.setTo(450, 250);
             platforms[1].revive();
-            platforms[1].position.setTo(140, 250);
+            platforms[1].position.setTo(140, 350);
 
-            pillars[1].y = 230;
-            pillars[2].y = 130;
+            pillars[1].y = 330;
+            pillars[2].y = 230;
         }
     },
 
@@ -124,7 +126,7 @@ game.time.advancedTiming = true;
                 game.physics.arcade.overlap(player, stones, this.playerHitStone, null, this);
                 game.physics.arcade.overlap(player, scorpions, this.playerHitScorpion, null, this);
                 game.physics.arcade.collide(player, door);
-                game.physics.arcade.collide(walls, scorpions, this.scorpionTouchWall, null, this);
+                game.physics.arcade.collide(ground, scorpions, this.scorpionTouchWall, null, this);
 
                 game.physics.arcade.collide(scorpions, platforms[0], this.scorpionTouchPlatform, null, this);
                 game.physics.arcade.collide(scorpions, platforms[1], this.scorpionTouchPlatform, null, this);
@@ -151,13 +153,13 @@ game.time.advancedTiming = true;
                 this.restart();
         }
 
-        game.physics.arcade.collide(walls, boss);
+        game.physics.arcade.collide(ground, boss);
 
         if(flags['winState'] || flags['timeOut']){
-            game.physics.arcade.collide(stones, walls);
-            game.physics.arcade.collide(stones, stones);
+            game.physics.arcade.collide(stones, ground);
+            game.physics.arcade.collide(stones);
 
-            if(game.global.level == 5){
+            if(game.global.level == 5 && !boss.isDie){
                 game.physics.arcade.overlap(boss, stones, this.killBoss, null, this);
                     
                 
@@ -168,7 +170,8 @@ game.time.advancedTiming = true;
 
 
     playerTouchWalls: function(){
-        game.physics.arcade.collide(player, walls);
+        game.physics.arcade.collide(player, wall);
+        game.physics.arcade.collide(player, ground);
         // Esta condición para poder subir en una plataforma y bajar de esta atravesandola
         if(player.body.velocity.y >= 0 && game.time.now - player.timeToDownPlatform > 500){
             game.physics.arcade.collide(player, platforms[0]);
@@ -184,7 +187,7 @@ game.time.advancedTiming = true;
     },
 
     attackHitScorpion: function(attack, scorpion){
-        scorpion.kill();
+        scorpion.takeDamage();
         gui.upScore(10);
 
         var prob = Math.random();
@@ -201,8 +204,7 @@ game.time.advancedTiming = true;
     },
 
     killBoss: function(boss, stone){
-        boss.killSound.play();
-        boss.kill();
+        boss.die();
         this.addExplosion(boss.x, boss.y);
         this.addExplosion(boss.x + 80, boss.y);
         this.addExplosion(boss.x + 40, boss.y + 40);
@@ -234,6 +236,9 @@ game.time.advancedTiming = true;
 
     addExplosion: function(x, y){
         var explosion = explosions.getFirstExists(false);
+        if(!explosion)
+            return;
+
         explosion.reset(x, y);
         explosion.play('kaboom', 30, false, true);
         boom_sound.play();
@@ -315,6 +320,7 @@ textb.text = game.time.fps;
         items = null;
 
         stones.reset();
+        stones.avalanche.visible = false;
         
         winImage.visible = false;
         endImage.visible = false;

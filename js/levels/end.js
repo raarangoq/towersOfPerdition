@@ -11,6 +11,7 @@ end = {
     dialog.revive();
     dialog.visible = false;
     texta.revive();
+    texta.fontSize = 16;
     texta.text = '';
 
     link.revive();
@@ -24,17 +25,15 @@ end = {
     linkfail.visible = false;
 
 
-    walls.callAll('revive');
-    walls.setAll('renderable', true);
+    wall.revive();
+    ground.revive();
+
 
     medusa.revive();
     medusa.position.setTo(100, 250);
     medusa.visible = false;
     
     background.revive();
-
-    walls.callAll('revive');
-    walls.setAll('visible', true);
 
     sound_backgroud.play();
 
@@ -113,9 +112,10 @@ end = {
                 }
             }
         }
-        else 
+        else{ 
             endImage.visible = true;
-
+            this.setText(3);
+        }
         
     },
 
@@ -135,6 +135,11 @@ end = {
         else if(value == 2){
             dialog.position.setTo(230, 330);
             texta.text = 'Humano, tu no debes estar aquí. \n!Vete¡';
+        }
+        else if(value == 3){
+            texta.text = 'Ganaste!!!\nEs una lástima que esa bruja te expulsara de la torre';
+            texta.fontSize = 32;
+            dialog.position.setTo(300, 200);
         }
 
         texta.position.setTo(dialog.x + dialog.width / 2 + 4, dialog.y + dialog.height / 2);

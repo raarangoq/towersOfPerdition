@@ -127,7 +127,12 @@ function hitPlayer(enemy){
 			else
 				return;
 		}
-		else if(enemy.key == 'stone' || enemy.key == 'boss'){
+		else if(enemy.key == 'stone1' ||
+				enemy.key == 'stone2' ||
+				enemy.key == 'stone3' ||
+				enemy.key == 'stone4' ||
+				enemy.key == 'stone5' ||
+				enemy.key == 'boss'){
 			this.takeDamage(stones.damage);
 			this.shield.visible = false;
 
@@ -371,12 +376,13 @@ function setWinState(){
 	door.move();
 	
 	stones.callAll('kill');
-	scorpions.callAll('kill');
+	scorpions.callAll('takeDamage');
 }
 
 function restartPlayer(){
 	this.x = 200;
 	this.y = 300;
+	this.body.velocity.setTo(0, 0);
 	this.segment = null;
 	this.shield.visible = false;
 	this.eyes.revive();

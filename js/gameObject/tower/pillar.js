@@ -52,7 +52,7 @@ function restartPillars(){
 ****************************************/
 
 function addPillar(id){
-	var pillar = game.add.sprite(100 + (id * 200), 430, 'pillar');
+	var pillar = game.add.sprite(100 + (id * 200), 460, 'pillar');
 	game.physics.enable(pillar, Phaser.Physics.ARCADE);
 	pillar.scale.setTo(0.5, 0.5);
 
