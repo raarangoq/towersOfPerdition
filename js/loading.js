@@ -8,6 +8,7 @@ var text;
 loading = {
 	preload: function(){
 
+
     game.load.image('light', 'assets/pics/items/bombArrowItem.png');
     game.load.image('velocity', 'assets/pics/items/speedItem.png');
     game.load.image('shield', 'assets/pics/items/shield.png');
@@ -55,6 +56,8 @@ loading = {
     game.load.image('initmenu', 'assets/pics/images/initmenu.png');
     game.load.image('lose', 'assets/pics/images/lose.png');
     game.load.image('pause', 'assets/pics/images/pause.png');
+    game.load.image('blankpause', 'assets/pics/images/blankpause.png');
+    game.load.image('input', 'assets/pics/images/input.png');
     game.load.image('win', 'assets/pics/images/win.png');
     game.load.spritesheet('linkfail', 'assets/pics/videos/linkfail.png', 145, 175);
 
