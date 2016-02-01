@@ -16,6 +16,7 @@ end = {
 
     link.revive();
     link.position.setTo(550, 350);
+    link.body.velocity.setTo(0, 0);
     link.scale.setTo(0.5, 0.5);
     link.animations.play('go');
 

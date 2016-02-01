@@ -106,6 +106,7 @@ function setGameInDark(value, alpha){
     player.alpha = alpha;
 
     scorpions.setAll('alpha', alpha, true);
+    stones.setAll('alpha', alpha, true);
 
     wall.alpha = alpha;
 //    ground.renderable = !value;
