@@ -6,6 +6,11 @@ function addPause(){
 
 	pause_menu.timeLastPause = game.time.now;
 
+	var text = game.add.text(540, 35, 'Usa <- -> para moverte entre páginas',
+		{ font: "14pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
+		wordWrap: true, wordWrapWidth: 230});
+	pause_menu.addChild(text);
+
 	pause_menu.actualPage = 0;
 	pause_menu.lastChange = game.time.now;
 
@@ -14,6 +19,7 @@ function addPause(){
 	pause_menu.pages[1] = addPausePage1();
 	pause_menu.pages[2] = addPausePage2();
 	pause_menu.pages[3] = addPausePage3();
+	pause_menu.pages[4] = addPausePage4();
 
 	pause_menu.showPage = showPausePage;
 
@@ -62,6 +68,8 @@ function pauseGame(){
 			
 			gui.timeText.initLevelTime += (game.time.now - this.timeLastPause);
 			light.timeInitLight += (game.time.now - this.timeLastPause);
+			player.shield.initTime += (game.time.now - this.timeLastPause);
+			player.start_time_hit += (game.time.now - this.timeLastPause);
 		}
 		else{
 			this.visible = true;

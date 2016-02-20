@@ -12,8 +12,13 @@ function addScore(){
     scoreText.setAlive = scoreSetAlive;
     scoreText.restart = restartScoreText;
     scoreText.update = updateScoreText;
+    scoreText.setGlobalScore = setGlobalScore;
 
     return scoreText;
+}
+
+function setGlobalScore(){
+    game.global.score = this.score;
 }
 
 function updateScoreText(){
@@ -40,5 +45,5 @@ function scoreSetAlive(value){
 }
 
 function restartScoreText(){
-    this.score = 0;
+    this.score = game.global.score;
 }

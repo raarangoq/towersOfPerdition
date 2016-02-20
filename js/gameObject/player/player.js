@@ -23,11 +23,17 @@ function addPlayer(){
 	player.attack = player.addChild(addAttack());
 	player.spiral = player.addChild(addSpiral());
 
-	player.shield = player.addChild(game.add.sprite(17, 10, 'shield'));
+	player.shield = player.addChild(game.add.sprite(34, 30, 'aura'));
+	player.shield.anchor.setTo(0.5, 0.5);
+	player.shield.animations.add('shine', [0, 1, 2, 3, 4, 5, 6], 9, true);
+	player.shield.play('shine');
+	player.shield.initTime = game.time.now;
 	player.shield.visible = false;
 
 	player.eyes = game.add.sprite( this.x+17, this.y+10, 'shield');
 	player.eyes.visible = false;
+
+	player.blood = player.addChild(addBlood());
 
 	player.haveTorpedo = false;
 	player.timeWithVelocity = 5000;
@@ -135,6 +141,7 @@ function hitPlayer(enemy){
 				enemy.key == 'boss'){
 			this.takeDamage(stones.damage);
 			this.shield.visible = false;
+			this.shield.scale.setTo(1, 1);
 
 			this.canMove = false;
 			this.spiral.visible = true;
@@ -144,11 +151,13 @@ function hitPlayer(enemy){
 		}
 	}
 	
-	this.sound_hit.play();
+	
 }
 
 function playerTakeDamage(damage){
+	this.blood.playBleed();
 	game.global.health -= damage;
+	this.sound_hit.play();
 	this.checkHealth();
 	this.playerDies();
 }
@@ -174,7 +183,9 @@ function playerDies(timeOut){
 	if (game.global.lives < 1 || timeOut){
 	    this.eyes.visible = false;
 	    this.kill();
-
+	    scorpions.callAll('takeDamage');
+	    this.canMove = true;
+		this.spiral.visible = false;
 //	    stones.callAll('kill');
 	    loseImage.visible = true;
 	}
@@ -284,10 +295,15 @@ function toAttack(){
 
 // Se ejecutan las funciones del jugador, como moverse y atacar
 function updatePlayer(){
+	if(game.physics.arcade.isPaused)
+		return;
+
 	if(game.time.elapsedSince(this.start_time_hit) > 1500 ){
 		this.canMove = true;
 		this.spiral.visible = false;
 	}
+
+	this.blood.update();
 
 	this.eyes.x = this.x+17;
 	this.eyes.y = this.y+10;
@@ -305,6 +321,19 @@ function updatePlayer(){
         	this.speed = this.SPEED_ATTACKING;
         gui.changeAbility(false, "velocity");
     }  
+
+    if(this.shield.visible){
+    	var time =  Math.floor((20000 - (game.time.now - this.shield.initTime)) / 1000);
+    	var scale = ((time * 1000 / 20000) * 1.5) + 0.5;
+    	if(scale > 1)
+    		scale = 1;
+    	
+    	this.shield.scale.setTo(scale, scale);
+
+    	if(game.time.now - this.shield.initTime > 20000)
+    		this.shield.visible = false;
+    }
+
 
     if( this.segment ){
     	this.segment.x = this.body.x + 5;
@@ -362,6 +391,7 @@ function activateVelocity(){
 
 function activateShield(){
 	this.shield.visible = true;
+	this.shield.initTime = game.time.now;
 }
 
 function activateLight(){
@@ -374,6 +404,10 @@ function setWinState(){
 	timeOfWinState = game.time.now;
 
 	door.move();
+
+	gui.upScore(game.global.lives * 30);
+    gui.upScore(game.global.level * 100);
+    gui.upScore(game.global.health * 2);
 	
 	stones.callAll('kill');
 	scorpions.callAll('takeDamage');

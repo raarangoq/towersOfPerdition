@@ -115,7 +115,7 @@ end = {
         }
         else{ 
             endImage.visible = true;
-            this.setText(3);
+            //this.setText(3);
         }
         
     },

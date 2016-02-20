@@ -85,8 +85,8 @@ function setScorpion(scorpion){
     scorpion.eyes.anchor.setTo(0.5, 0.5);
     scorpion.eyes.position.setTo(scorpion.x, scorpion.y);
 
-    scorpion.scale.setTo(2, 2);
-    scorpion.eyes.scale.setTo(2, 2);
+//    scorpion.scale.setTo(2, 2);
+//    scorpion.eyes.scale.setTo(2, 2);
 
     scorpion.move = moveScorpionToTarget;
     scorpion.setMarch = setScorpionMarch;

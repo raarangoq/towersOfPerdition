@@ -5,10 +5,11 @@ game.global = {
 	level : 5,
 	is_playing : false,
 	lives : 3,
-	health : 100
+	health : 100,
+	score : 0,
 }
 
-game.state.add('boot', boot, true);
+game.state.add('boot', boot);
 game.state.add('loading', loading);
 
 //game.state.add('lose', lose);

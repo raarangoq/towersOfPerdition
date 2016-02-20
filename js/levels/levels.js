@@ -21,7 +21,9 @@ endImage.visible = false;
     light.revive();
     light.restart();
 
+    lateralWalls.revive();
     wall.revive();
+
     ground.revive();
     ground.renderable = false;
 
@@ -33,7 +35,7 @@ endImage.visible = false;
     door.setAlive(true);
     door.reset();
 
-//    items = addItem('light');
+//items = addItem('shield');
     
 
     pillars.setAlive(true);
@@ -259,7 +261,7 @@ game.time.advancedTiming = true;
                     flags['winAnimationPointA'] = true;
                 }
             }
-            else if(game.time.now - timeOfWinState < 8000){
+            else if(game.time.now - timeOfWinState < 12000){
                 if(!flags['winAnimationPointB']){
                     stones.startAvalanche();
                     flags['winAnimationPointB'] = true;
@@ -292,7 +294,7 @@ game.time.advancedTiming = true;
     
 
     render: function() {
-
+//game.debug.body(wall);
 textb.text = game.time.fps;
 //texta.text = player.speed;
 
@@ -304,6 +306,7 @@ textb.text = game.time.fps;
 
         if (player.alive){
             game.global.level++;
+            gui.scoreText.setGlobalScore();
         }
         else{
             game.global.lives = 3;
@@ -333,6 +336,13 @@ textb.text = game.time.fps;
         if(game.global.level <= 5)
             game.state.start('levels', false);
         else {
+
+            /*    ScormProcessSetValue("cmi.core.score.min", 0.0000);
+            ScormProcessSetValue("cmi.core.score.max", 100.0000);
+            ScormProcessSetValue("cmi.core.score.raw", 100);
+            if( ScormProcessGetValue("cmi.comments") < game.global.score )
+                ScormProcessSetValue("cmi.comments", game.global.score);*/
+
             player.kill();
             player.eyes.kill();
             pillars.setAlive(false);

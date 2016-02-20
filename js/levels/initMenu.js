@@ -8,6 +8,7 @@ var flags = [];
 var light;
 
 var wall;
+var lateralWalls;
 var ground;
 var platforms = [];
 var door;
@@ -39,6 +40,12 @@ initMenu = {
 	create: function(){
 
 		image = game.add.sprite(0, 0, 'initmenu');
+		var text = game.add.text(400, 200, 'Towers of Doom',
+		{ font: "56pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 6,
+		wordWrap: true, wordWrapWidth: 600, align: 'center'});
+		text.anchor.setTo(0.5, 0.5);
+		image.addChild(text);
+
 		game.global.is_playing = false;
 
 		this.addFlags();
@@ -53,6 +60,9 @@ initMenu = {
 
 	    this.addWalls();
 	    wall.kill();
+
+	    lateralWalls.kill();
+	    
 	    ground.kill();
 
 	    this.addPlatforms(),
@@ -114,6 +124,9 @@ initMenu = {
 	    medusa.kill();
 	    medusa_sound = game.add.audio('medusa');
 
+	    gui = new GUI();
+	    gui.setAlive(false);	
+
 	    this.addLink();
 
 	    texta = game.add.text(dialog.x + dialog.width / 2, dialog.y + dialog.height / 2, '', 
@@ -124,8 +137,7 @@ initMenu = {
 
 	   
 
-	    gui = new GUI();
-	    gui.setAlive(false);	
+	    
 
 	},
 
@@ -150,7 +162,9 @@ initMenu = {
 		ground.body.immovable = true;
 		ground.renderable = false;
 
-		wall = game.add.sprite(0, -100, 'door-1');
+		lateralWalls = game.add.sprite(0, 0, 'walls');
+
+		wall = game.add.sprite(0, -25, 'door-1');
 		game.physics.enable(wall, Phaser.Physics.ARCADE);
 		wall.body.immovable = true;
 
@@ -210,10 +224,31 @@ initMenu = {
 		linkfail.kill();
 
 	    winImage = game.add.sprite(0, 0, 'win');
+	    var text = game.add.text(150, 500, 
+		'Presiona ENTER para ir al siguiente nivel...', 
+		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
+		wordWrap: true, wordWrapWidth: 600});
+		winImage.addChild(text);
 	    winImage.visible = false;
+
+
 	    loseImage = game.add.sprite(0, 0, 'lose');
+	    var text = game.add.text(150, 500, 
+		'Presiona ENTER para volver a jugar...', 
+		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
+		wordWrap: true, wordWrapWidth: 600});
+		loseImage.addChild(text);
 	    loseImage.visible = false;
-	    endImage = game.add.sprite(0, 0, 'end');
+
+
+	    endImage = game.add.sprite(0, 0, 'win');
+	    var text = game.add.text(400, 400, 
+		'Es una lastima que esa bruja te expulsara de las cuevas\n\n\n' +
+		'Preciona ENTER para volver a jugar...', 
+		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
+		wordWrap: true, wordWrapWidth: 500, align: 'center'});
+		text.anchor.setTo(0.5, 0.5);
+		endImage.addChild(text);
 	    endImage.visible = false;
 	},
 }
