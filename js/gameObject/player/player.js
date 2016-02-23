@@ -247,7 +247,9 @@ function movePlayer(){
 	
 	if(keyboard.upKey()){
 		if (player.body.touching.down){
-			this.body.velocity.y = -this.speed * 1.5;
+			this.body.velocity.y = -this.speed;
+			if(this.speed != this.highSpeed)
+				this.body.velocity.y = -this.speed * 1.5;
 		}
 		this.playAnimations('back');
 		if(!this.is_attacking) 
@@ -312,6 +314,7 @@ function updatePlayer(){
 	this.attacking();
 
 	if (game.time.time - this.timeVelocityActivated < this.timeWithVelocity){
+		
         this.speed = this.highSpeed;
     }
     else{
@@ -323,14 +326,14 @@ function updatePlayer(){
     }  
 
     if(this.shield.visible){
-    	var time =  Math.floor((20000 - (game.time.now - this.shield.initTime)) / 1000);
-    	var scale = ((time * 1000 / 20000) * 1.5) + 0.5;
+    	var time =  Math.floor((10000 - (game.time.now - this.shield.initTime)) / 1000);
+    	var scale = ((time * 1000 / 10000) * 1.5) + 0.5;
     	if(scale > 1)
     		scale = 1;
     	
     	this.shield.scale.setTo(scale, scale);
 
-    	if(game.time.now - this.shield.initTime > 20000)
+    	if(game.time.now - this.shield.initTime > 10000)
     		this.shield.visible = false;
     }
 

@@ -173,16 +173,18 @@ initMenu = {
 
 	addPlatforms: function(){
 		platforms[0] = game.add.sprite(350, 300, 'platform');
-		platforms[0].scale.x = 3;
 		game.physics.enable(platforms[0], Phaser.Physics.ARCADE);
 		platforms[0].body.immovable = true;
 		platforms[0].body.customSeparateX = true;
+		platforms[0].body.setSize(65, 40, 30, 0);
+		platforms[0].scale.x = 3;
 
 		platforms[1] = game.add.sprite(50, 200, 'platform');
-		platforms[1].scale.x = 3;
 		game.physics.enable(platforms[1], Phaser.Physics.ARCADE);
 		platforms[1].body.immovable = true;
 		platforms[1].body.customSeparateX = true;
+		platforms[1].body.setSize(65, 40, 30, 0);
+		platforms[1].scale.x = 3;
 	},
 
 	// Establecer la explosión

@@ -26,7 +26,7 @@ function addStones(){
     stones.sound = game.add.audio("stone", 0.2);
 
 
-    stones.avalanche = game.add.sprite(-200, -800, 'avalanche');
+    stones.avalanche = game.add.sprite(-200, -900, 'avalanche');
     game.physics.enable(stones.avalanche, Phaser.Physics.ARCADE);
     stones.avalanche.visible = false;
 
@@ -88,7 +88,7 @@ function resetStones(){
     this.timeBetweenStones = 6000 - (game.global.level * 600);
     this.callAll('kill');
     this.initAvalanche = false;
-    this.avalanche.y = -800;
+    this.avalanche.y = -900;
     this.avalanche.visible = true;
     this.avalanche.body.velocity.y = 0;
     this.avalanche.body.acceleration.y = 0;
@@ -97,5 +97,5 @@ function resetStones(){
 function startAvalanche(){
     this.initAvalanche = true;
 //    this.avalanche.visible = true;
-    this.avalanche.body.acceleration.y = this.speed / 4;
+    this.avalanche.body.acceleration.y = this.speed / 8;
 }

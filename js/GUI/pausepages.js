@@ -100,24 +100,25 @@ function addPausePage3(){
 function addPausePage4(){
 	var page = game.add.sprite(100, 130, 'segment-3');
 	var text = game.add.text(50, 0, 
-		'Totem: Cuando estés sobre el tótem presiona espacio para agarrarlo y llevarlo a otra base.', 
+		'Totem: Cuando estés sobre el tótem presiona espacio para agarrarlo y llevarlo a otra base.\n' + 
+		'Pero ten cuidado, no podrás atacar mientras lo sostengas.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
 
-	var image = game.add.sprite(0, 100, 'fire');
+	var image = game.add.sprite(0, 150, 'fire');
 	image.animations.add('burn', [0, 1], 7, true);
 	image.play('burn');
 	page.addChild(image);
-	text = game.add.text(50, 100, 
+	text = game.add.text(50, 150, 
 		'Antorcha: Cuando se estinga su llama, no podrás ver nada.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
 
-	image = game.add.sprite(0, 200, 'light');
+	image = game.add.sprite(0, 250, 'light');
 	page.addChild(image);
-	text = game.add.text(50, 200, 
+	text = game.add.text(50, 250, 
 		'Luz: Tomalo para revivir y avivar el fuego de la antorcha.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});

@@ -8,7 +8,7 @@ function addScorpions(){
 	scorpions = game.add.group();
     scorpions.enableBody = true;
     scorpions.physicsBodyType = Phaser.Physics.ARCADE;
-    scorpions.createMultiple(10, 'scorpion');
+    scorpions.createMultiple(5, 'scorpion');
     scorpions.setAll('anchor.x', 0.5);
     scorpions.setAll('anchor.y', 0.5);
 //    scorpions.setAll('outOfBoundsKill', true);
@@ -85,7 +85,7 @@ function setScorpion(scorpion){
     scorpion.eyes.anchor.setTo(0.5, 0.5);
     scorpion.eyes.position.setTo(scorpion.x, scorpion.y);
 
-//    scorpion.scale.setTo(2, 2);
+    scorpion.body.setSize(35, 40, 2, -10);
 //    scorpion.eyes.scale.setTo(2, 2);
 
     scorpion.move = moveScorpionToTarget;
@@ -118,7 +118,7 @@ function updateScorpion(scorpion){
 
 function setScorpionMarch(a, b){
     if(!this.marchSetted){
-        if(Math.random() < 0.15){
+        if(Math.random() < 0.5){
             this.PointA = a;
             this.PointB = b;
         }
@@ -126,16 +126,16 @@ function setScorpionMarch(a, b){
             this.PointA = 100;
             this.PointB = 700;
         }   
-        this.speed = 100 + (scorpions.speed * Math.random());
+        this.speed = 75 + (scorpions.speed * Math.random() / 1.5);
         this.marchSetted = true;
         this.move(this.PointB);
-        scorpion.play('right');
+        this.play('right');
     }
 }
 
 function moveScorpionToTarget(target){
     this.target = target;
-    game.physics.arcade.moveToXY(this, this.target, this.y, scorpions.speed);
+    game.physics.arcade.moveToXY(this, this.target, this.y, this.speed);
 }
 
 function scorpionTakeDamage(){

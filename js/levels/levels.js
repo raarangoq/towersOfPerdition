@@ -35,7 +35,7 @@ endImage.visible = false;
     door.setAlive(true);
     door.reset();
 
-//items = addItem('shield');
+//items = addItem('velocity');
     
 
     pillars.setAlive(true);
@@ -59,9 +59,9 @@ endImage.visible = false;
 
 
     sound_backgroud.play();
-dialog.kill();
+    dialog.kill();
 
-game.time.advancedTiming = true;
+//game.time.advancedTiming = true;
 
 
     
@@ -90,12 +90,21 @@ game.time.advancedTiming = true;
             platforms[0].revive();
             platforms[0].position.setTo(450, 400);
             platforms[1].revive();
-            platforms[1].position.setTo(140, 300);
+            platforms[1].position.setTo(200, 350);
 
-            pillars[1].y = 280;
+            pillars[1].y = 330;
             pillars[2].y = 380;
         }
         else if( game.global.level == 4 ){
+            platforms[0].revive();
+            platforms[0].position.setTo(450, 300);
+            platforms[1].revive();
+            platforms[1].position.setTo(140, 370);
+
+            pillars[1].y = 350;
+            pillars[2].y = 280;
+        }
+        else if( game.global.level == 5 ){
             platforms[0].revive();
             platforms[0].position.setTo(450, 370);
             platforms[1].revive();
@@ -103,15 +112,6 @@ game.time.advancedTiming = true;
 
             pillars[1].y = 250;
             pillars[2].y = 350;
-        }
-        else if( game.global.level == 5 ){
-            platforms[0].revive();
-            platforms[0].position.setTo(450, 250);
-            platforms[1].revive();
-            platforms[1].position.setTo(140, 350);
-
-            pillars[1].y = 330;
-            pillars[2].y = 230;
         }
     },
 
@@ -194,11 +194,11 @@ game.time.advancedTiming = true;
 
         var prob = Math.random();
         if(items == null){
-            if(prob < 0.2)
+            if(prob < 0.1)
                 items = addItem('shield');
-            else if( prob < 0.4)
+            else if( prob < 0.2)
                 items = addItem('velocity');
-            else if(prob < 0.6)
+            else if(prob < 0.3)
                 items = addItem('light');
         }
 
@@ -295,9 +295,9 @@ game.time.advancedTiming = true;
 
     render: function() {
 //game.debug.body(wall);
-textb.text = game.time.fps;
+//textb.text = game.time.fps;
 //texta.text = player.speed;
-
+//game.debug.body(platforms[0]);
 
     },
 
