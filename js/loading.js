@@ -83,6 +83,8 @@ loading = {
     game.load.audio('boss', 'assets/sounds/boss.mp3');
     game.load.audio('creature', 'assets/sounds/creature.mp3');
 
+    game.load.audio('warning', 'assets/sounds/alarma.mp3');
+
     game.load.audio('item', 'assets/sounds/item.mp3');
     game.load.audio('bat', 'assets/sounds/bat.mp3');
     game.load.audio('arrow', 'assets/sounds/flecha.mp3');

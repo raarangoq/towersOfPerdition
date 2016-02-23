@@ -45,15 +45,15 @@ endImage.visible = false;
     timeOfWinState = game.time.now;
 
     if(game.global.level == 5){
-        pillars[2].push(segments[4]);
+        pillars[0].push(segments[4]);
         boss.revive();
         boss.reset(); 
     }
     if(game.global.level >= 3){
-        pillars[2].push(segments[3]);
+        pillars[0].push(segments[3]);
     }
-    pillars[2].push(segments[2]);
-    pillars[2].push(segments[1]);
+    pillars[0].push(segments[2]);
+    pillars[0].push(segments[1]);
     pillars[0].push(segments[0]);
 
 
@@ -276,19 +276,8 @@ endImage.visible = false;
         }
     },
 
-    // Establecer la explosión
-    setupExplosion: function(explosion) {
-        
-    },
-
     setAbility: function(player, item){
         items.takeItem();
-    },
-
-    enemyHitsPlayer: function(player, bullet) {
-        
-
-        
     },
 
     

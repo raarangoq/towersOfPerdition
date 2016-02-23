@@ -8,6 +8,8 @@ function addTimer(){
     timer.initLevelTime = game.time.now;
     timer.levelTime = 60000;
 
+    timer.sound = game.add.audio('warning', 1, true);
+
     timer.setDrawOrder = timerSetDrawOrder;
     timer.setAlive = timerSetAlive;
     timer.restart = restartTimer;
@@ -18,22 +20,40 @@ function addTimer(){
 
 
 function updateTimer(){
-    if(game.physics.arcade.isPaused || game.global.lives <= 0 || game.global.level > 5)
+    if( game.global.lives <= 0 || game.global.level > 5 || !game.global.is_playing){
+        this.fill = '#FFFFFF';
+        this.sound.stop();
         return;
+    }
+
+    if (game.physics.arcade.isPaused){
+        return;
+    }
 
     this.text = this.timerString;
 
     var time = Math.floor((this.levelTime - (game.time.now - this.initLevelTime)) / 1000);
+    if(!this.sound.isPlaying && time <= 30 && !flags['winState']){
+            this.sound.play();
+            this.fill = '#FF0000';
+    }
+
     if(time > 0){
     	if (!flags['winState'])
     		this.text += time;
-    	else
+    	else{
     		this.text += '0';
+            this.fill = '#FFFFFF';
+            this.sound.stop();
+        }
     }
     else{
     	this.text += '0';
     	flags['timeOut'] = true;
     	stones.startAvalanche();
+
+        this.fill = '#FFFFFF';
+        this.sound.stop();
     }
 }
 
@@ -59,5 +79,5 @@ function restartTimer(){
     if(game.global.level >= 3)
         this.levelTime += 120000;
     if(game.global.level >= 5)
-        this.levelTime += 120000;
+        this.levelTime += 240000;
 }
