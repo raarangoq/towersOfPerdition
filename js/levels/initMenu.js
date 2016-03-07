@@ -235,7 +235,7 @@ initMenu = {
 
 
 	    loseImage = game.add.sprite(0, 0, 'lose');
-	    var text = game.add.text(150, 500, 
+	    text = game.add.text(150, 500, 
 		'Presiona ENTER para volver a jugar...', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
@@ -243,8 +243,14 @@ initMenu = {
 	    loseImage.visible = false;
 
 
-	    endImage = game.add.sprite(0, 0, 'win');
-	    var text = game.add.text(400, 400, 
+	    endImage = game.add.sprite(0, 0, 'end');
+	    text = game.add.text(400, 250, 
+		'¡¡¡GANASTE!!!', 
+		{ font: "42pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 6,
+		wordWrap: true, wordWrapWidth: 600, align: 'center'});
+		text.anchor.setTo(0.5, 0.5);
+		endImage.addChild(text);
+	    text = game.add.text(400, 400, 
 		'Es una lastima que esa bruja te expulsara de las cuevas\n\n\n' +
 		'Preciona ENTER para volver a jugar...', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,

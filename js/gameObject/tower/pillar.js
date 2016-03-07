@@ -52,9 +52,10 @@ function restartPillars(){
 ****************************************/
 
 function addPillar(id){
-	var pillar = game.add.sprite(100 + (id * 200), 460, 'pillar');
+	var pillar = game.add.sprite(100 + (id * 200), 480, 'pillar');
 	game.physics.enable(pillar, Phaser.Physics.ARCADE);
-	pillar.scale.setTo(0.5, 0.5);
+//	pillar.scale.setTo(1, 1);
+	pillar.anchor.set(0.5);
 
 	pillar.slot = [];
 	pillar.slot[0] = null;
@@ -124,6 +125,6 @@ function popSegment(){
 
 function setSegmentPosition(segment, slot){
 	segment.x = this.x;
-	segment.y = this.y + (slot * 30) - 130;
+	segment.y = this.y + (slot * 30) - 135;
 
 }

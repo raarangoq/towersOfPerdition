@@ -30,7 +30,8 @@ function addPlayer(){
 	player.shield.initTime = game.time.now;
 	player.shield.visible = false;
 
-	player.eyes = game.add.sprite( this.x+17, this.y+10, 'shield');
+	player.eyes = game.add.sprite( this.x, this.y, 'playereyes');
+	player.eyes.scale.setTo(1.3, 1.3);
 	player.eyes.visible = false;
 
 	player.blood = player.addChild(addBlood());
@@ -103,6 +104,10 @@ function addPlayerAnimations(){
 	player.animations.add('attack_left', [12, 13, 14, 15], frames_per_second, false);
 	player.animations.add('attack_right', [28, 29, 30, 31], frames_per_second, false);
 	player.animations.add('attack_back', [20, 21, 22, 23], frames_per_second, false);
+
+	// animaciones para sostener un totem
+	player.animations.add('totem_left', [32, 33, 34, 35], frames_per_second, true);
+	player.animations.add('totem_right', [36, 37, 38, 39], frames_per_second, true);
 }
 
 
@@ -277,9 +282,18 @@ function movePlayer(){
 }
 
 
-// cuando se realiza un ataque, se reproduce la animación correspondiente a la dirección del jugador
+// cuando no se realiza un ataque, se reproduce la animación correspondiente a la dirección del jugador
 function playAnimations(new_direction){
-	if(!this.is_attacking || this.segment){
+	if(this.is_attacking)
+		return;
+
+	if(this.segment){
+		if(new_direction == 'left' || new_direction == 'right'){
+			this.animations.play('totem_' + new_direction);
+			this.direction = new_direction;
+		}
+	}
+	else{
 		this.animations.play('walk_' + new_direction);
 		this.direction = new_direction;
 	}
@@ -307,8 +321,9 @@ function updatePlayer(){
 
 	this.blood.update();
 
-	this.eyes.x = this.x+17;
-	this.eyes.y = this.y+10;
+	this.eyes.x = this.x;
+	this.eyes.y = this.y;
+	this.eyes.frame = this.frame;
 
 	this.movePlayer();
 	this.attacking();
@@ -339,8 +354,8 @@ function updatePlayer(){
 
 
     if( this.segment ){
-    	this.segment.x = this.body.x + 5;
-		this.segment.y = this.body.y - 45;
+    	this.segment.x = this.body.x + 15;
+		this.segment.y = this.body.y - 25;
     }
 
 	// Cuando se presiona la tecla SPACE, se produce un ataque o se interactúa con un pillar
@@ -362,13 +377,16 @@ function playerOverlapPillar(){
 			if (this.segment != null){
 				if(pillars[i].push(this.segment)){
 					this.segment = null;
+					this.playAnimations(this.direction);
 					return true;
 				}
 			}
 			else{
 				this.segment = pillars[i].pop();
-				if(this.segment)
+				if(this.segment){
+					this.playAnimations(this.direction);
 					return true;
+				}
 			}
 		}
 	}

@@ -31,6 +31,7 @@ loading = {
     game.load.spritesheet('kaboom', 'assets/pics/explode.png', 128, 128);
 
     game.load.spritesheet('player', 'assets/pics/player.png', 70, 70);
+    game.load.spritesheet('playereyes', 'assets/pics/playereyes.png', 70, 70);
     game.load.spritesheet('attack','assets/pics/attackzone.png', 30, 30);
     game.load.spritesheet('spiral','assets/pics/spiral.png', 44, 38);
     game.load.spritesheet('blood', 'assets/pics/blood.png', 83, 69);

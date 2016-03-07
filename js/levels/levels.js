@@ -45,15 +45,15 @@ endImage.visible = false;
     timeOfWinState = game.time.now;
 
     if(game.global.level == 5){
-        pillars[0].push(segments[4]);
+        pillars[2].push(segments[4]);
         boss.revive();
         boss.reset(); 
     }
     if(game.global.level >= 3){
-        pillars[0].push(segments[3]);
+        pillars[2].push(segments[3]);
     }
-    pillars[0].push(segments[2]);
-    pillars[0].push(segments[1]);
+    pillars[2].push(segments[2]);
+    pillars[2].push(segments[1]);
     pillars[0].push(segments[0]);
 
 
@@ -77,14 +77,14 @@ endImage.visible = false;
             platforms[1].kill();
             platforms[1].position.setTo(50, 220);
 
-            pillars[1].y = 460;
-            pillars[2].y = 460;
+            pillars[1].y = 480;
+            pillars[2].y = 480;
         }
         if(game.global.level == 2){
             platforms[0].revive();
             platforms[0].position.setTo(450, 400);
 
-            pillars[2].y = 380;
+            pillars[2].y = 400;
         }
         else if( game.global.level == 3 ){
             platforms[0].revive();
@@ -92,8 +92,8 @@ endImage.visible = false;
             platforms[1].revive();
             platforms[1].position.setTo(200, 350);
 
-            pillars[1].y = 330;
-            pillars[2].y = 380;
+            pillars[1].y = 350;
+            pillars[2].y = 400;
         }
         else if( game.global.level == 4 ){
             platforms[0].revive();
@@ -101,8 +101,8 @@ endImage.visible = false;
             platforms[1].revive();
             platforms[1].position.setTo(140, 370);
 
-            pillars[1].y = 350;
-            pillars[2].y = 280;
+            pillars[1].y = 370;
+            pillars[2].y = 300;
         }
         else if( game.global.level == 5 ){
             platforms[0].revive();
@@ -110,8 +110,8 @@ endImage.visible = false;
             platforms[1].revive();
             platforms[1].position.setTo(140, 270);
 
-            pillars[1].y = 250;
-            pillars[2].y = 350;
+            pillars[1].y = 270;
+            pillars[2].y = 370;
         }
     },
 

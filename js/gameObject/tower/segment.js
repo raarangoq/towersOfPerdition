@@ -12,7 +12,7 @@ function addSegments(){
 
 function addSegment(id){
 	var segment = game.add.sprite(150 + (id * 200), 200, 'segment-' + (id + 1));
-//	segment.scale.setTo(0.5, 0.5);
+	segment.anchor.set(0.5);
 	game.physics.enable(segment, Phaser.Physics.ARCADE);
 
 	segment.id = id + 1;
