@@ -6,7 +6,7 @@ function addPausePage0(){
 
 	var text = game.add.text(0, 180, 
 		'Completa el problema de las torres de Hanoi mientras peleas con los escorpiones, ' + 
-		'antes de tiempo, para escapar de la camara que colapsa.\n\n',
+		'antes de tiempo, para escapar de la cámara que colapsa.\n\n',
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600, align: 'center'});
 	text.anchor.setTo(0.5, 0.5);
@@ -32,7 +32,7 @@ function addPausePage2(){
 	page.animations.add('walk', [0, 1, 2], 8, true);
     page.play('walk');
 	var text = game.add.text(50, 0, 
-		'Escorpion: pequeño bicho que inflinge daño leve.', 
+		'Escorpión: pequeño bicho que infringe daño leve.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -51,7 +51,7 @@ function addPausePage2(){
     image.scale.setTo(0.5, 0.5);
 	page.addChild(image);
 	text = game.add.text(100, 170, 
-		'Rey: Gran escorpion inmune a los ataques físicos, infringe daño moderado y te incapacita.', 
+		'Rey: Gran escorpión inmune a los ataques físicos, infringe daño moderado y te incapacita.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 500});
 	page.addChild(text);
@@ -79,7 +79,7 @@ function addPausePage3(){
 	var image = game.add.sprite(0, 100, 'shield');
 	page.addChild(image);
 	text = game.add.text(50, 100, 
-		'Escudo: Te proteje de los escorpiones.', 
+		'Escudo: Te protege de los escorpiones.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -100,7 +100,7 @@ function addPausePage3(){
 function addPausePage4(){
 	var page = game.add.sprite(100, 130, 'segment-3');
 	var text = game.add.text(50, 0, 
-		'Totem: Cuando estés sobre el tótem presiona espacio para agarrarlo y llevarlo a otra base.\n' + 
+		'Tótem: Cuando estés sobre el tótem presiona espacio para agarrarlo y llevarlo a otra base.\n' + 
 		'Pero ten cuidado, no podrás atacar mientras lo sostengas.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
@@ -111,7 +111,7 @@ function addPausePage4(){
 	image.play('burn');
 	page.addChild(image);
 	text = game.add.text(50, 150, 
-		'Antorcha: Cuando se estinga su llama, no podrás ver nada.', 
+		'Antorcha: Cuando se extinga su llama, no podrás ver nada.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3, 
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);
@@ -119,7 +119,7 @@ function addPausePage4(){
 	image = game.add.sprite(0, 250, 'light');
 	page.addChild(image);
 	text = game.add.text(50, 250, 
-		'Luz: Tomalo para revivir y avivar el fuego de la antorcha.', 
+		'Luz: Tómalo para revivir y avivar el fuego de la antorcha.', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 600});
 	page.addChild(text);

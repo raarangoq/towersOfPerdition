@@ -252,7 +252,7 @@ initMenu = {
 		endImage.addChild(text);
 	    text = game.add.text(400, 400, 
 		'Es una lastima que esa bruja te expulsara de las cuevas\n\n\n' +
-		'Preciona ENTER para volver a jugar...', 
+		'Presiona ENTER para volver a jugar...', 
 		{ font: "16pt ferney", fill: '#fff', stroke: '#000000', strokeThickness: 3,
 		wordWrap: true, wordWrapWidth: 500, align: 'center'});
 		text.anchor.setTo(0.5, 0.5);
