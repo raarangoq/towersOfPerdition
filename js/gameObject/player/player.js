@@ -319,6 +319,12 @@ function updatePlayer(){
 		this.spiral.visible = false;
 	}
 
+	if(this.y < -30 || this.y > 620 || this.x < -20 || this.x > 820){
+		this.position.setTo(400, 400);
+		this.body.velocity.setTo(0, 0);
+	}
+
+
 	this.blood.update();
 
 	this.eyes.x = this.x;
