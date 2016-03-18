@@ -319,11 +319,10 @@ function updatePlayer(){
 		this.spiral.visible = false;
 	}
 
-	if(this.y < -30 || this.y > 620 || this.x < -20 || this.x > 820){
+	if(this.y < -30 || this.y > 630 || this.x < -30 || this.x > 830){
 		this.position.setTo(400, 400);
 		this.body.velocity.setTo(0, 0);
 	}
-
 
 	this.blood.update();
 
