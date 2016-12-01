@@ -8,8 +8,8 @@ var textb;
 levels = {
     create: function() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    
-endImage.visible = false; 
+
+endImage.visible = false;
 
     background.revive();
 
@@ -36,7 +36,7 @@ endImage.visible = false;
     door.reset();
 
 //items = addItem('velocity');
-    
+
 
     pillars.setAlive(true);
     pillars.restart();
@@ -47,7 +47,7 @@ endImage.visible = false;
     if(game.global.level == 5){
         pillars[0].push(segments[4]);
         boss.revive();
-        boss.reset(); 
+        boss.reset();
     }
     if(game.global.level >= 3){
         pillars[0].push(segments[3]);
@@ -64,7 +64,7 @@ endImage.visible = false;
 //game.time.advancedTiming = true;
 
 
-    
+
 
     game.global.is_playing = true;
     gui.pauseGame();
@@ -120,11 +120,11 @@ endImage.visible = false;
 
 
         this.playerTouchWalls();
-            
+
 
         if (!flags['winState']){
             if (player.alive){
-                
+
                 game.physics.arcade.overlap(player, stones, this.playerHitStone, null, this);
                 game.physics.arcade.overlap(player, scorpions, this.playerHitScorpion, null, this);
                 game.physics.arcade.collide(player, door);
@@ -163,8 +163,8 @@ endImage.visible = false;
 
             if(game.global.level == 5 && !boss.isDie){
                 game.physics.arcade.overlap(boss, stones, this.killBoss, null, this);
-                    
-                
+
+
             }
         }
     },
@@ -246,9 +246,9 @@ endImage.visible = false;
         boom_sound.play();
     },
 
-   
+
     playWinAnimation: function(){
-        if (game.global.level <= 5){          
+        if (game.global.level <= 5){
             if(game.time.now - timeOfWinState < 2000){ //wait
                 player.body.velocity.x = 0;
                 player.animations.stop();
@@ -268,11 +268,11 @@ endImage.visible = false;
                 }
             }
             else{
-                winImage.visible = true;              
+                winImage.visible = true;
             }
         }
         else{
-//         
+//
         }
     },
 
@@ -280,7 +280,7 @@ endImage.visible = false;
         items.takeItem();
     },
 
-    
+
 
     render: function() {
 //game.debug.body(wall);
@@ -313,7 +313,7 @@ endImage.visible = false;
 
         stones.reset();
         stones.avalanche.visible = false;
-        
+
         winImage.visible = false;
         endImage.visible = false;
         loseImage.visible = false;
@@ -326,11 +326,11 @@ endImage.visible = false;
             game.state.start('levels', false);
         else {
 
-            /*    ScormProcessSetValue("cmi.core.score.min", 0.0000);
+            ScormProcessSetValue("cmi.core.score.min", 0.0000);
             ScormProcessSetValue("cmi.core.score.max", 100.0000);
             ScormProcessSetValue("cmi.core.score.raw", 100);
             if( ScormProcessGetValue("cmi.comments") < game.global.score )
-                ScormProcessSetValue("cmi.comments", game.global.score);*/
+                ScormProcessSetValue("cmi.comments", game.global.score);
 
             player.kill();
             player.eyes.kill();
